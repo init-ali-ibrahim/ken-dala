@@ -1,142 +1,3 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-// import 'package:http/http.dart' as http;
-// import 'dart:convert';
-//
-// import 'package:ken_dala/view/login_screen.dart';
-//
-// class ProfileScreen extends StatefulWidget {
-//   const ProfileScreen({Key? key}) : super(key: key);
-//
-//   @override
-//   _ProfileScreenState createState() => _ProfileScreenState();
-// }
-//
-// class _ProfileScreenState extends State<ProfileScreen> {
-//   bool _isLoading = false;
-//   Map<String, dynamic>? _profileData;
-//   String? _errorMessage;
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     _fetchProfileData();
-//   }
-//
-//   final storage = const FlutterSecureStorage();
-//
-//   Future<String?> _getToken() async {
-//     return await storage.read(key: 'token');
-//   }
-//
-//   Future<void> _fetchProfileData() async {
-//     setState(() {
-//       _isLoading = true;
-//     });
-//
-//     String? lox = await storage.read(key: 'token');
-//
-//     final response = await http.get(
-//       Uri.parse('http://192.168.0.219:80/api/v1/auth/profile'),
-//       headers: <String, String>{
-//         'Authorization': 'Bearer $lox',
-//         'Accept': 'application/json',
-//       },
-//     );
-//
-//     print('$lox ТОКЕЕЕЕЕЕЕЕЕЕЕЕЕЕЕЕЕЕЕЕЕен');
-//
-//     setState(() {
-//       _isLoading = false;
-//     });
-//
-//     if (response.statusCode == 201) {
-//       final data = jsonDecode(response.body);
-//       if (data['success']) {
-//         setState(() {
-//           _profileData = data['data'];
-//         });
-//       } else {
-//         setState(() {
-//           _errorMessage = 'Failed to load profile data';
-//         });
-//       }
-//     } else {
-//       setState(() {
-//         _errorMessage = 'Server error: ${response.body}';
-//       });
-//     }
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Colors.black,
-//       appBar: AppBar(
-//         title: const Text('Profile'),
-//       ),
-//       body: FutureBuilder<String?>(
-//         future: _getToken(),
-//         builder: (context, snapshot) {
-//           if (snapshot.connectionState == ConnectionState.waiting) {
-//             return const Scaffold(body: Center(child: CircularProgressIndicator()));
-//           } else if (snapshot.hasData && snapshot.data != null) {
-//             return _isLoading
-//                 ? const Center(child: CircularProgressIndicator())
-//                 : _profileData != null
-//                     ? Padding(
-//                         padding: const EdgeInsets.all(16.0),
-//                         child: Column(
-//                           crossAxisAlignment: CrossAxisAlignment.start,
-//                           children: [
-//                             _buildProfileInfo('Name', '${_profileData!['name']} ${_profileData!['last_name']}'),
-//                             _buildProfileInfo('Email', _profileData!['email']),
-//                             _buildProfileInfo('Phone', _profileData!['phone']),
-//                             _buildProfileInfo('Created At', _profileData!['created_at']),
-//                             _buildProfileInfo('Updated At', _profileData!['updated_at']),
-//                             _buildProfileInfo('Theme', _profileData!['theme']),
-//                             _buildProfileInfo('Is Admin', _profileData!['is_admin'] == 1 ? 'Yes' : 'No'),
-//                             const SizedBox(height: 20),
-//                             if (_errorMessage != null)
-//                               Text(
-//                                 _errorMessage!,
-//                                 style: const TextStyle(color: Colors.red),
-//                               ),
-//                           ],
-//                         ),
-//                       )
-//                     : Center(child: ElevatedButton(onPressed: () {}, child: Text('No profile data available')));
-//           } else {
-//             return const LoginScreen();
-//           }
-//         },
-//       ),
-//     );
-//   }
-//
-//   Widget _buildProfileInfo(String title, String value) {
-//     return Padding(
-//       padding: const EdgeInsets.only(bottom: 16.0),
-//       child: Row(
-//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//         children: [
-//           Text(
-//             '$title:',
-//             style: const TextStyle(color: Colors.white, fontSize: 16),
-//           ),
-//           Expanded(
-//             child: Text(
-//               value,
-//               style: const TextStyle(color: Colors.grey, fontSize: 16),
-//               textAlign: TextAlign.end,
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -228,8 +89,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<List<Order>> getOrders() async {
     String? authToken = await secureStorage.read(key: 'token');
 
+    const url = 'http://192.168.0.219:80/api/v1/orders';
+
     final response = await http.get(
-      Uri.parse('http://192.168.0.219:80/api/v1/orders'),
+      Uri.parse(url),
       headers: {
         'Authorization': 'Bearer $authToken',
         'Content-Type': 'application/json',
@@ -238,6 +101,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       var data = jsonDecode(response.body);
+      print('Response data: $data');
+
       List<Order> orders = (data as List).map((order) => Order.fromJson(order)).toList();
       return orders;
     } else {
@@ -301,7 +166,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         body: SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 20),
               Padding(
@@ -346,22 +211,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  _authService.logout();
-                  Navigator.pushNamedAndRemoveUntil(context, '/profile', (Route<dynamic> route) => false);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 16),
-                ),
-                child: const Text(
-                  'LogOut',
-                  style: TextStyle(fontSize: 18, color: Colors.white),
-                ),
+
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                child: Text('Orders',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold
+                    )),
               ),
               FutureBuilder<List<Order>>(
                 future: getOrders(),
@@ -408,7 +265,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     }
 
                     return Padding(
-                      padding: const EdgeInsets.all(15),
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Column(
                         children: orders.map((order) {
                           return Container(
@@ -433,32 +290,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       const SizedBox(height: 4),
                                       Text('${order.orderedAt}'),
                                       const SizedBox(height: 10),
-                                      Column(
+                                      Row(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         mainAxisAlignment: MainAxisAlignment.start,
-                                        children: order.products.map((product) {
-                                          return Padding(
-                                            padding: const EdgeInsets.symmetric(vertical: 4.0),
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                // Text('Product: ${product.name}'),
-                                                // Text('Quantity: ${product.quantity}'),
-                                                // Text('Price: ${product.price}'),
-                                                ClipRRect(
-                                                  borderRadius: BorderRadius.circular(99),
-                                                  child: Image.network(
-                                                    product.imageUrl,
-                                                    height: 60,
-                                                    width: 60,
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          );
+                                        children: order.products.asMap().entries.map((entry) {
+                                          int index = entry.key;
+                                          var product = entry.value;
+
+                                          if (index < 2) {
+                                            return Padding(
+                                              padding: const EdgeInsets.symmetric(vertical: 4.0),
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.circular(99),
+                                                child: Image.network(
+                                                  product.imageUrl,
+                                                  height: 60,
+                                                  width: 60,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            );
+                                          } else if (index == 2) {
+                                            return Padding(
+                                              padding: const EdgeInsets.symmetric(vertical: 4.0),
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.circular(99),
+                                                child: Container(
+                                                  height: 60,
+                                                  width: 60,
+                                                  color: Colors.grey[200],
+                                                  child: const Icon(Icons.more_horiz, size: 30),
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                          return Container();
                                         }).toList(),
-                                      ),
+                                      )
                                     ],
                                   )),
                                   Container(
@@ -468,9 +336,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       children: [
                                         Text(
                                           order.status,
-                                          style: TextStyle(color: Colors.green),
+                                          style: const TextStyle(color: Colors.green),
                                         ),
-                                        Text(
+                                        const Text(
                                           '20 T',
                                           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                                         ),
@@ -486,6 +354,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     return const Center(child: Text('No orders found'));
                   }
                 },
+              ),
+
+              ElevatedButton(
+                onPressed: () {
+                  _authService.logout();
+                  Navigator.pushNamedAndRemoveUntil(context, '/profile', (Route<dynamic> route) => false);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 16),
+                ),
+                child: const Text(
+                  'LogOut',
+                  style: TextStyle(fontSize: 18, color: Colors.white),
+                ),
               ),
             ],
           ),

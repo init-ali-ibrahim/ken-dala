@@ -265,7 +265,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
 
   late FlutterSecureStorage secureStorage;
 
-  String sendUrl = 'http://192.168.0.219:80/api/v1/orders';
+  String sendUrl = 'http://192.168.43.174:80/api/v1/orders';
 
   @override
   void initState() {
@@ -286,13 +286,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
     }
 
     List<Product> products = await productService.getAllProducts();
-    List<Map<String, dynamic>> productData = products
-        .where((product) => product.quantity > 0)
-        .map((product) => {
-      "product_id": product.id,
-      "quantity": product.quantity
-    })
-        .toList();
+    List<Map<String, dynamic>> productData =
+        products.where((product) => product.quantity > 0).map((product) => {"product_id": product.id, "quantity": product.quantity}).toList();
 
     if (productData.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -307,27 +302,16 @@ class _ProductListScreenState extends State<ProductListScreen> {
         'Authorization': 'Bearer $authToken',
         'Content-Type': 'application/json',
       },
-      body: jsonEncode({
-        "products": productData,
-        "name": "assylzhan",
-        "phone": "77077701465",
-        "delivery_type": "pickup"
-      }),
+      body: jsonEncode({"products": productData, "name": "assylzhan", "phone": "77077701465", "delivery_type": "pickup"}),
     );
 
     print('Отправляем на сервер:');
     print('Токен: $authToken');
-    print('Тело запроса: ${jsonEncode({
-      "products": productData,
-      "name": "assylzhan",
-      "phone": "77077701465",
-      "delivery_type": "pickup"
-    })}');
+    print('Тело запроса: ${jsonEncode({"products": productData, "name": "assylzhan", "phone": "77077701465", "delivery_type": "pickup"})}');
 
     print('');
 
     print('Тело ответа: ${response.body}');
-
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -399,7 +383,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 style: TextStyle(color: Colors.black),
               ),
               InkWell(
-                onTap: () => clearProduct(),
+                // onTap: () => clearProduct(),
+                onTap: () => showCustomDialog(context),
                 borderRadius: const BorderRadius.all(Radius.circular(99)),
                 child: Container(
                   width: 40,
@@ -595,6 +580,40 @@ class _ProductListScreenState extends State<ProductListScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  void showCustomDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          content: Padding(
+            padding: EdgeInsets.only(top: 10, right: 10),
+            child: const Text(
+              'Очистить все товары из корзины',
+              style: TextStyle(fontSize: 14),
+            ),
+          ),
+          actionsAlignment: MainAxisAlignment.end,
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'Отмена'),
+              child: const Text('Отмена'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pushNamedAndRemoveUntil(context, '/', (Route<dynamic> route) => false),
+              child: const Text(
+                'Очистить',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

@@ -44,7 +44,6 @@ class _ProfileCheckScreenState extends State<ProfileCheckScreen> {
 
 // ---------------
 
-
 class EmptyScreen extends StatelessWidget {
   const EmptyScreen({super.key});
 

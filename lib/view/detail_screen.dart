@@ -202,6 +202,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 onTap: () async {
                   try {
                     await controlProductId(food.id, food.name, food.price, food.imageUrl);
+                    Navigator.pop(context);
                   } catch (e, stackTrace) {
                     print("Error in onTap: $e");
                     print("Stack trace: $stackTrace");

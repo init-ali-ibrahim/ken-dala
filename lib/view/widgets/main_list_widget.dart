@@ -33,7 +33,7 @@ class _MainListWidgetState extends State<MainListWidget> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(10),
                         child: Image.asset('assets/coffee2', width: 110, height: 110, fit: BoxFit.cover),
                       ),
                       const SizedBox(width: 12),
@@ -51,7 +51,7 @@ class _MainListWidgetState extends State<MainListWidget> {
                           TextButton(
                             onPressed: () {},
                             style: TextButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 1), minimumSize: const Size(50, 30), backgroundColor: Colors.grey.shade200),
+                                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 0), minimumSize: const Size(50, 30), backgroundColor: Colors.grey.shade200),
                             child: const Text(
                               'from 2 990 T',
                               style: TextStyle(fontSize: 12, color: Colors.black),
@@ -71,7 +71,7 @@ class _MainListWidgetState extends State<MainListWidget> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(10),
                       child: Image.asset('assets/coffee3', width: 110, height: 110, fit: BoxFit.cover),
                     ),
                     const SizedBox(width: 12),
@@ -107,7 +107,7 @@ class _MainListWidgetState extends State<MainListWidget> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(10),
                       child: Image.asset('assets/coffee1', width: 110, height: 110, fit: BoxFit.cover),
                     ),
                     const SizedBox(width: 12),
