@@ -195,7 +195,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     print("Stack trace: $stackTrace");
                   }
                 },
-                splashColor: const Color(0xFF780A0A),
+                splashColor: Colors.red,
                 borderRadius: BorderRadius.circular(99),
                 child: Container(
                     width: MediaQuery.of(context).size.width,
@@ -204,11 +204,11 @@ class _DetailScreenState extends State<DetailScreen> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(99),
                       // shape: BoxShape.circle,
-                      color: const Color(0xE2B41B1B),
+                      color: Colors.red,
                     ),
                     child: Center(
                       child: Text(
-                        '+ ${food.price} ₸',
+                        '+ ₸ ${food.price}',
                         style: const TextStyle(
                           fontSize: 20,
                           color: Colors.white,

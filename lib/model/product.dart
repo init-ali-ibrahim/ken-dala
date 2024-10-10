@@ -26,6 +26,7 @@ class Product {
 class ProductService {
   final Isar isar;
   final ValueNotifier<int> totalPriceNotifier = ValueNotifier(0);
+  final ValueNotifier<int> quantitySingleProductNotifier = ValueNotifier(0);
 
   ProductService(this.isar){
     _updateTotalPrice();
@@ -53,8 +54,8 @@ class ProductService {
       await isar.writeTxn(() async {
         if (quantity <= 0) {
           await isar.products.delete(product.id);
-        } else if (quantity > 30) {
-          product.quantity = 30;
+        } else if (quantity > 10) {
+          product.quantity = 10;
           await isar.products.put(product);
         } else {
           product.quantity = quantity;

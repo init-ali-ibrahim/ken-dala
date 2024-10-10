@@ -1,11 +1,9 @@
 import 'dart:convert';
-import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:ken_dala/model/product.dart';
 import 'package:ken_dala/view/widgets/main_appbar.dart';
 import 'package:ken_dala/view/widgets/main_history.dart';
-import 'package:ken_dala/view/widgets/main_list_widget.dart';
 import 'package:rect_getter/rect_getter.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:http/http.dart' as http;
@@ -213,7 +211,7 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin {
                     borderRadius: BorderRadius.circular(100),
                   ),
                   child: const SizedBox(
-                    width: 100,
+                    width: 140,
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -221,13 +219,13 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin {
                         Icon(
                           Icons.add_shopping_cart,
                           color: Colors.white,
-                          size: 30,
+                          size: 22,
                         ),
                         SizedBox(
-                          width: 20,
+                          width: 10,
                         ),
                         Text(
-                          'Cart',
+                          'totalPrice',
                           style: TextStyle(color: Colors.white, fontSize: 20),
                         ),
                       ],
@@ -366,19 +364,6 @@ class CategorySection extends StatelessWidget {
   }) {
     return InkWell(
       onTap: () {
-        // Navigator.of(context).push(
-        //   PageRouteBuilder(
-        //     pageBuilder: (context, animation, secondaryAnimation) => SecondPage(),
-        //     transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        //       return SharedAxisTransition(
-        //         animation: animation,
-        //         secondaryAnimation: secondaryAnimation,
-        //         transitionType: SharedAxisTransitionType.horizontal, // Тип перехода
-        //         child: child,
-        //       );
-        //     },
-        //   ),
-        // );
         Navigator.pushNamed(context, '/detail', arguments: food);
       },
       splashColor: Colors.transparent,
@@ -468,7 +453,7 @@ class CategorySection extends StatelessWidget {
                     style: TextButton.styleFrom(
                         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 1), minimumSize: const Size(50, 30), backgroundColor: Colors.grey.shade200),
                     child: Text(
-                      '${food.price} ₸',
+                      '₸ ${food.price}',
                       style: const TextStyle(fontSize: 12, color: Colors.black),
                     ),
                   ),

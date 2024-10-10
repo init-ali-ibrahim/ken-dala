@@ -11,7 +11,6 @@ class ProductListScreen extends StatefulWidget {
 
   const ProductListScreen({super.key, required this.isar});
 
-
   @override
   _ProductListScreenState createState() => _ProductListScreenState();
 }
@@ -216,15 +215,23 @@ class _ProductListScreenState extends State<ProductListScreen> {
                               }
                             },
                           ),
-                          Text(
-                            '${product.quantity}',
-                            style: const TextStyle(fontSize: 12),
+                          AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 300),
+                            transitionBuilder: (Widget child, Animation<double> animation) {
+                              return FadeTransition(opacity: animation, child: child);
+                            },
+                            child: Text(
+                              '${product.quantity}',
+                              key: ValueKey<int>(product.quantity),
+                            ),
                           ),
                           IconButton(
-                            icon: const Icon(Icons.add, size: 20),
-                            onPressed: () {
-                              updateProductQuantity(product, product.quantity + 1);
-                            },
+                            icon: product.quantity >= 10 ? Icon(Icons.add, size: 20, color: Colors.grey.shade300) : const Icon(Icons.add, size: 20),
+                            onPressed: product.quantity >= 10
+                                ? null
+                                : () {
+                                    updateProductQuantity(product, product.quantity + 1);
+                                  },
                           ),
                         ],
                       ),
@@ -269,23 +276,31 @@ class _ProductListScreenState extends State<ProductListScreen> {
                         ],
                       ),
                     ),
-                    ValueListenableBuilder<int>(
-                      valueListenable: productService.totalPriceNotifier,
-                      builder: (context, totalPrice, child) {
-                        return Text(
-                          'Итого: \$${totalPrice.toStringAsFixed(2)}',
-                        );
-                      },
-                    ),
-                    // Column(
-                    //   crossAxisAlignment: CrossAxisAlignment.end,
-                    //   children: [
-                    //     Text(
-                    //       'Итого',
-                    //       style: TextStyle(color: Colors.grey.shade600),
-                    //     ),
-                    //   ],
-                    // ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        const Text('Итого:'),
+                        ValueListenableBuilder<int>(
+                          valueListenable: productService.totalPriceNotifier,
+                          builder: (context, totalPrice, child) {
+                            return AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 300),
+                              transitionBuilder: (Widget child, Animation<double> animation) {
+                                return FadeTransition(
+                                  opacity: animation,
+                                  child: child,
+                                );
+                              },
+                              child: Text(
+                                '₸ $totalPrice',
+                                key: ValueKey<int>(totalPrice),
+                                style: const TextStyle(fontSize: 24),
+                              ),
+                            );
+                          },
+                        )
+                      ],
+                    )
                   ],
                 ),
                 const SizedBox(height: 20),
@@ -338,7 +353,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
             padding: EdgeInsets.only(top: 10, right: 10),
             child: Text(
               'Очистить все товары из корзины',
-              style: TextStyle(fontSize: 14),
+              style: TextStyle(fontSize: 14, color: Colors.black),
             ),
           ),
           actionsAlignment: MainAxisAlignment.end,
@@ -351,7 +366,10 @@ class _ProductListScreenState extends State<ProductListScreen> {
               ),
             ),
             TextButton(
-              onPressed: () => Navigator.pushNamedAndRemoveUntil(context, '/', (Route<dynamic> route) => false),
+              onPressed: () {
+                clearProduct();
+                Navigator.pushNamedAndRemoveUntil(context, '/', (Route<dynamic> route) => false);
+              },
               child: const Text(
                 'Очистить',
                 style: TextStyle(color: Colors.red),
