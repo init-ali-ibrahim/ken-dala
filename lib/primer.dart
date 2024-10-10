@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:ken_dala/model/product.dart';
@@ -365,6 +366,19 @@ class CategorySection extends StatelessWidget {
   }) {
     return InkWell(
       onTap: () {
+        // Navigator.of(context).push(
+        //   PageRouteBuilder(
+        //     pageBuilder: (context, animation, secondaryAnimation) => SecondPage(),
+        //     transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        //       return SharedAxisTransition(
+        //         animation: animation,
+        //         secondaryAnimation: secondaryAnimation,
+        //         transitionType: SharedAxisTransitionType.horizontal, // Тип перехода
+        //         child: child,
+        //       );
+        //     },
+        //   ),
+        // );
         Navigator.pushNamed(context, '/detail', arguments: food);
       },
       splashColor: Colors.transparent,
@@ -551,12 +565,12 @@ class Food {
   });
 }
 
-class ProductService {
-  final Isar isar;
-
-  ProductService(this.isar);
-
-  Future<List<Product>> getAllProducts() async {
-    return await isar.products.where().findAll();
-  }
-}
+// class ProductService {
+//   final Isar isar;
+//
+//   ProductService(this.isar);
+//
+//   Future<List<Product>> getAllProducts() async {
+//     return await isar.products.where().findAll();
+//   }
+// }

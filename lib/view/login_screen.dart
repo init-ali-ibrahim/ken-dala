@@ -139,15 +139,15 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            TextButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/register');
-              },
-              child: const Text(
-                  'У вас нет учетной записи? подписывать',
-                style: TextStyle(fontSize: 16, color: Colors.red),
-              ),
-            ),
+            // TextButton(
+            //   onPressed: () {
+            //     Navigator.pushNamed(context, '/register');
+            //   },
+            //   child: const Text(
+            //       'У вас нет учетной записи? подписывать',
+            //     style: TextStyle(fontSize: 16, color: Colors.red),
+            //   ),
+            // ),
           ],
         ),
       ),

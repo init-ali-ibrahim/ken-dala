@@ -11,6 +11,7 @@ class ProductListScreen extends StatefulWidget {
 
   const ProductListScreen({super.key, required this.isar});
 
+
   @override
   _ProductListScreenState createState() => _ProductListScreenState();
 }
@@ -268,15 +269,23 @@ class _ProductListScreenState extends State<ProductListScreen> {
                         ],
                       ),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          'Итого',
-                          style: TextStyle(color: Colors.grey.shade600),
-                        ),
-                      ],
+                    ValueListenableBuilder<int>(
+                      valueListenable: productService.totalPriceNotifier,
+                      builder: (context, totalPrice, child) {
+                        return Text(
+                          'Итого: \$${totalPrice.toStringAsFixed(2)}',
+                        );
+                      },
                     ),
+                    // Column(
+                    //   crossAxisAlignment: CrossAxisAlignment.end,
+                    //   children: [
+                    //     Text(
+                    //       'Итого',
+                    //       style: TextStyle(color: Colors.grey.shade600),
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 ),
                 const SizedBox(height: 20),
@@ -290,7 +299,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                     backgroundColor: const Color(0xFFDA3131),
                   ),
                   child: const Text(
-                    'Pay',
+                    'Оплатить',
                     style: TextStyle(color: Colors.white, fontSize: 20),
                   ),
                 )

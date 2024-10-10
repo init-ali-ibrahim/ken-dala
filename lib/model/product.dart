@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 
 part 'product.g.dart';
@@ -24,9 +25,11 @@ class Product {
 
 class ProductService {
   final Isar isar;
+  final ValueNotifier<int> totalPriceNotifier = ValueNotifier(0);
 
-  ProductService(this.isar);
-
+  ProductService(this.isar){
+    _updateTotalPrice();
+  }
 
   Future<List<Product>> getAllProducts() async {
     return await isar.products.where().findAll();
@@ -41,6 +44,8 @@ class ProductService {
       print("Error in addProduct: $e");
       print("Stack trace: $stackTrace");
     }
+
+    await _updateTotalPrice();
   }
 
   Future<void> updateQuantity(Product product, int quantity) async {
@@ -60,12 +65,16 @@ class ProductService {
       print("Error in updateQuantity: $e");
       print("Stack trace: $stackTrace");
     }
+
+    await _updateTotalPrice();
   }
 
   Future<void> deleteProduct(int id) async {
     await isar.writeTxn(() async {
       await isar.products.delete(id);
     });
+
+    await _updateTotalPrice();
   }
 
   Future clearProducts() async {
@@ -75,5 +84,22 @@ class ProductService {
         await isar.products.delete(product.id);
       }
     });
+  }
+
+  Future<void> _updateTotalPrice() async {
+    int totalPrice = (await calculateTotalPrice());
+    totalPriceNotifier.value = totalPrice;
+  }
+
+  Future<int> calculateTotalPrice() async {
+    int totalPrice = 0;
+
+    final allProducts = await getAllProducts();
+
+    for (var product in allProducts) {
+      totalPrice += int.parse(product.price) * product.quantity;
+    }
+
+    return totalPrice;
   }
 }

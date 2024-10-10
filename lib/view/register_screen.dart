@@ -208,20 +208,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
               child: const Text(
-                'Sign Up',
+                'Войти',
                 style: TextStyle(fontSize: 18, color: Colors.white),
               ),
             ),
             const SizedBox(height: 20),
-            TextButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/login');
-              },
-              child: const Text(
-                'Already have an account? Log In',
-                style: TextStyle(fontSize: 16, color: Colors.red),
-              ),
-            ),
+            // TextButton(
+            //   onPressed: () {
+            //     Navigator.pushNamed(context, '/login');
+            //   },
+            //   child: const Text(
+            //     'Already have an account? Log In',
+            //     style: TextStyle(fontSize: 16, color: Colors.red),
+            //   ),
+            // ),
           ],
         ),
       ),
