@@ -49,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               InkWell(
                 onTap: () {
-                  Navigator.pushNamedAndRemoveUntil(context, '/profile', (Route<dynamic> route) => false);
+                  Navigator.pop(context);
                 },
                 borderRadius: const BorderRadius.all(Radius.circular(99)),
                 child: Container(
@@ -58,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   padding: const EdgeInsets.all(8),
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.white,
+                    color: Color(0xFFF4F4F6),
                   ),
                   child: const Icon(
                     Icons.arrow_back_ios_rounded,
@@ -77,14 +77,15 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            const SizedBox(height: 40),
             const Icon(
               Icons.lock,
               size: 100,
-              color: Colors.blueAccent,
+              color: Colors.red,
             ),
             const SizedBox(height: 30),
             const Text(
-              'Welcome Back!',
+              'С возвращением!',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 28,
@@ -94,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             const SizedBox(height: 10),
             Text(
-              'Log in to your account',
+              'Войдите в свою учетную запись',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 16, color: Colors.grey[600]),
             ),
@@ -103,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
               controller: _phoneController,
               keyboardType: TextInputType.phone,
               decoration: InputDecoration(
-                labelText: 'Phone Number',
+                labelText: 'Номер телефона',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
@@ -115,7 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
               controller: _passwordController,
               obscureText: true,
               decoration: InputDecoration(
-                labelText: 'Password',
+                labelText: 'Пароль',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
@@ -126,25 +127,25 @@ class _LoginScreenState extends State<LoginScreen> {
             ElevatedButton(
               onPressed: _login,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueAccent,
+                backgroundColor: Colors.red,
                 padding: const EdgeInsets.symmetric(vertical: 15),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
               ),
               child: const Text(
-                'Log In',
+                'Войти',
                 style: TextStyle(fontSize: 18, color: Colors.white),
               ),
             ),
             const SizedBox(height: 20),
             TextButton(
               onPressed: () {
-                Navigator.pushNamedAndRemoveUntil(context, '/register', (Route<dynamic> route) => false);
+                Navigator.pushNamed(context, '/register');
               },
               child: const Text(
-                'Don\'t have an account? Sign Up',
-                style: TextStyle(fontSize: 16, color: Colors.blueAccent),
+                  'У вас нет учетной записи? подписывать',
+                style: TextStyle(fontSize: 16, color: Colors.red),
               ),
             ),
           ],

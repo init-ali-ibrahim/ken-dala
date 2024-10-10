@@ -109,11 +109,11 @@ class EmptyScreen extends StatelessWidget {
               const Icon(
                 Icons.lock_outline,
                 size: 100,
-                color: Colors.blueAccent,
+                color: Colors.red,
               ),
               const SizedBox(height: 20),
               const Text(
-                'You are not logged in',
+                'Вы не вошли в систему',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -122,7 +122,7 @@ class EmptyScreen extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Text(
-                'Please log in to access your profile.',
+                'Пожалуйста, войдите в систему.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 16,
@@ -137,13 +137,13 @@ class EmptyScreen extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30), side: const BorderSide(color: Colors.blueAccent, width: 2)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30), side: const BorderSide(color: Colors.red, width: 2)),
                 ),
                 child: const Text(
                   'Войти в систему',
                   style: TextStyle(
                     fontSize: 18,
-                    color: Colors.blueAccent,
+                    color: Colors.red,
                   ),
                 ),
               ),
@@ -153,7 +153,7 @@ class EmptyScreen extends StatelessWidget {
                   Navigator.pushNamed(context, '/register');
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blueAccent,
+                  backgroundColor: Colors.red,
                   padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),

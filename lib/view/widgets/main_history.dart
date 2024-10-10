@@ -35,10 +35,85 @@ class _MainHistoryState extends State<MainHistory> {
                         fit: BoxFit.cover,
                       ),
                     ),
-                    const Positioned(
-                      bottom: 5,
-                      child: Padding(padding: EdgeInsets.all(5), child: Text('dara')),
-                    )
+                    // const Positioned(
+                    //   bottom: 5,
+                    //   child: Padding(padding: EdgeInsets.all(5), child: Text('dara')),
+                    // )
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            InkWell(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => MoreStories()));
+              },
+              child: SizedBox(
+                child: Stack(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.asset(
+                        'assets/coffee3',
+                        height: 120,
+                        width: 90,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    // const Positioned(
+                    //   bottom: 5,
+                    //   child: Padding(padding: EdgeInsets.all(5), child: Text('dara')),
+                    // )
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            InkWell(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => MoreStories()));
+              },
+              child: SizedBox(
+                child: Stack(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.asset(
+                        'assets/coffee2',
+                        height: 120,
+                        width: 90,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    // const Positioned(
+                    //   bottom: 5,
+                    //   child: Padding(padding: EdgeInsets.all(5), child: Text('dara')),
+                    // )
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            InkWell(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => MoreStories()));
+              },
+              child: SizedBox(
+                child: Stack(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.asset(
+                        'assets/coffee1',
+                        height: 120,
+                        width: 90,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    // const Positioned(
+                    //   bottom: 5,
+                    //   child: Padding(padding: EdgeInsets.all(5), child: Text('dara')),
+                    // )
                   ],
                 ),
               ),
@@ -60,85 +135,10 @@ class _MainHistoryState extends State<MainHistory> {
                         fit: BoxFit.cover,
                       ),
                     ),
-                    const Positioned(
-                      bottom: 5,
-                      child: Padding(padding: EdgeInsets.all(5), child: Text('dara')),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(width: 10),
-            InkWell(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => MoreStories()));
-              },
-              child: SizedBox(
-                child: Stack(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Image.asset(
-                        'assets/coffee',
-                        height: 120,
-                        width: 90,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    const Positioned(
-                      bottom: 5,
-                      child: Padding(padding: EdgeInsets.all(5), child: Text('dara')),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(width: 10),
-            InkWell(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => MoreStories()));
-              },
-              child: SizedBox(
-                child: Stack(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Image.asset(
-                        'assets/coffee',
-                        height: 120,
-                        width: 90,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    const Positioned(
-                      bottom: 5,
-                      child: Padding(padding: EdgeInsets.all(5), child: Text('dara')),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(width: 10),
-            InkWell(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => MoreStories()));
-              },
-              child: SizedBox(
-                child: Stack(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Image.asset(
-                        'assets/coffee',
-                        height: 120,
-                        width: 90,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    const Positioned(
-                      bottom: 5,
-                      child: Padding(padding: EdgeInsets.all(5), child: Text('dara')),
-                    )
+                    // const Positioned(
+                    //   bottom: 5,
+                    //   child: Padding(padding: EdgeInsets.all(5), child: Text('dara')),
+                    // )
                   ],
                 ),
               ),

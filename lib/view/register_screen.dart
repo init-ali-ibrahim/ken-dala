@@ -75,7 +75,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             children: [
               InkWell(
                 onTap: () {
-                  Navigator.pushNamedAndRemoveUntil(context, '/profile', (Route<dynamic> route) => false);
+                  Navigator.pop(context);
                 },
                 borderRadius: const BorderRadius.all(Radius.circular(99)),
                 child: Container(
@@ -84,7 +84,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   padding: const EdgeInsets.all(8),
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.white,
+                    color: Color(0xFFF4F4F6),
                   ),
                   child: const Icon(
                     Icons.arrow_back_ios_rounded,
@@ -105,14 +105,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            const SizedBox(height: 40),
             const Icon(
               Icons.person_add,
               size: 100,
-              color: Colors.blueAccent,
+              color: Colors.red,
             ),
             const SizedBox(height: 30),
             const Text(
-              'Create Account',
+              'Cоздать аккаунт',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 28,
@@ -122,7 +123,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             const SizedBox(height: 10),
             Text(
-              'Sign up to get started',
+              'Зарегистрируйтесь, чтобы начать работу',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 16, color: Colors.grey[600]),
             ),
@@ -130,7 +131,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             TextFormField(
               controller: _nameController,
               decoration: InputDecoration(
-                labelText: 'First Name',
+                labelText: 'Имя',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
@@ -141,7 +142,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             TextFormField(
               controller: _lastNameController,
               decoration: InputDecoration(
-                labelText: 'Last Name',
+                labelText: 'Фамилия',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
@@ -153,7 +154,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               controller: _phoneController,
               keyboardType: TextInputType.phone,
               decoration: InputDecoration(
-                labelText: 'Phone Number',
+                labelText: 'Номер телефона',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
@@ -177,7 +178,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               controller: _passwordController,
               obscureText: true,
               decoration: InputDecoration(
-                labelText: 'Password',
+                labelText: 'Пароль',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
@@ -189,7 +190,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               controller: _passwordConfirmController,
               obscureText: true,
               decoration: InputDecoration(
-                labelText: 'Confirm Password',
+                labelText: 'Подтвердите пароль',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
@@ -200,7 +201,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ElevatedButton(
               onPressed: _register,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueAccent,
+                backgroundColor: Colors.red,
                 padding: const EdgeInsets.symmetric(vertical: 15),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
@@ -214,11 +215,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
             const SizedBox(height: 20),
             TextButton(
               onPressed: () {
-                Navigator.pushNamedAndRemoveUntil(context, '/login', (Route<dynamic> route) => false);
+                Navigator.pushNamed(context, '/login');
               },
               child: const Text(
                 'Already have an account? Log In',
-                style: TextStyle(fontSize: 16, color: Colors.blueAccent),
+                style: TextStyle(fontSize: 16, color: Colors.red),
               ),
             ),
           ],

@@ -95,7 +95,7 @@ class _DetailScreenState extends State<DetailScreen> {
         backgroundColor: Colors.transparent,
         title: Text(
           food.name,
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+          style: const TextStyle(fontSize: 20,),
         ),
       ),
       body: Container(
@@ -103,27 +103,21 @@ class _DetailScreenState extends State<DetailScreen> {
           child: Stack(
             children: [
               Container(
-                  height: 400,
+                  height: 500,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(30),
                       gradient: LinearGradient(colors: [
                         Colors.white,
                         Colors.orange.shade50,
                         Colors.orange.shade200,
                       ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
                   child: Center(
-                      // child: Image.network(
-                      //   food.imageUrl,
-                      //   width: 200,
-                      //   height: 200,
-                      //   fit: BoxFit.cover,
-                      // ),
-                      child: ClipRRect( borderRadius: const BorderRadius.only(bottomRight: Radius.circular(20), bottomLeft: Radius.circular(20)),
+                      child: ClipRRect( borderRadius: const BorderRadius.only(bottomRight: Radius.circular(30), bottomLeft: Radius.circular(30)),
                         child: Image.network(
                           food.imageUrl,
                           width: MediaQuery.of(context).size.width,
-                          height: 400,
+                          height: 500,
                           fit: BoxFit.cover,
                         ),
                   ))),
@@ -133,7 +127,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
                 child: Container(
-                    margin: const EdgeInsets.only(top: 400),
+                    margin: const EdgeInsets.only(top: 500),
                     child: SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -155,13 +149,6 @@ class _DetailScreenState extends State<DetailScreen> {
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        // const Padding(
-                                        //   padding: EdgeInsets.only(bottom: 5),
-                                        //   child: Text(
-                                        //     'food.description',
-                                        //     style: TextStyle(fontSize: 18),
-                                        //   ),
-                                        // ),
                                         Text(
                                           food.description,
                                           style: const TextStyle(fontSize: 14),
@@ -208,7 +195,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     print("Stack trace: $stackTrace");
                   }
                 },
-                splashColor: const Color(0xFF0A1A78),
+                splashColor: const Color(0xFF780A0A),
                 borderRadius: BorderRadius.circular(99),
                 child: Container(
                     width: MediaQuery.of(context).size.width,
@@ -217,12 +204,12 @@ class _DetailScreenState extends State<DetailScreen> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(99),
                       // shape: BoxShape.circle,
-                      color: const Color(0xC01B31B4),
+                      color: const Color(0xE2B41B1B),
                     ),
-                    child: const Center(
+                    child: Center(
                       child: Text(
-                        'Composition',
-                        style: TextStyle(
+                        '+ ${food.price} ₸',
+                        style: const TextStyle(
                           fontSize: 20,
                           color: Colors.white,
                           fontWeight: FontWeight.w400,

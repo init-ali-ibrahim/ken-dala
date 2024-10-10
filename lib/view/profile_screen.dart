@@ -113,7 +113,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.white,
           surfaceTintColor: Colors.white,
@@ -211,14 +210,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                child: Text('Orders',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold
-                    )),
+                child: Text('Orders', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               ),
               FutureBuilder<List<Order>>(
                 future: getOrders(),
@@ -355,7 +349,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   }
                 },
               ),
-
               ElevatedButton(
                 onPressed: () {
                   _authService.logout();

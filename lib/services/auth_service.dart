@@ -4,8 +4,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class AuthService {
-  final String registerUrl = 'http://192.168.0.219:80/api/v1/auth/register';
-  final String loginUrl = 'http://192.168.0.219:80/api/v1/auth/login';
+  final String registerUrl = 'http://192.168.0.103:80/api/v1/auth/register';
+  final String loginUrl = 'http://192.168.0.103:80/api/v1/auth/login';
 
   final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
 

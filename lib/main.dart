@@ -7,10 +7,12 @@ import 'package:ken_dala/view/detail_screen.dart';
 import 'package:ken_dala/view/login_screen.dart';
 import 'package:ken_dala/view/map_screen.dart';
 import 'package:ken_dala/view/profile_check_screen.dart';
-import 'package:ken_dala/view/profile_screen.dart';
 import 'package:ken_dala/view/register_screen.dart';
-// import 'package:ken_dala/example.dart';
 import 'package:path_provider/path_provider.dart';
+
+import 'package:ken_dala/view/profile_screen.dart';
+// import 'package:ken_dala/example.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,6 +38,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.white
+        ),
+        fontFamily: 'Inter',
         textTheme: TextTheme(
           displayLarge: Theme.of(context).textTheme.displayLarge?.copyWith(
                 letterSpacing: -0.1,
@@ -83,20 +90,20 @@ class MyApp extends StatelessWidget {
                 letterSpacing: -0.1,
               ),
         ),
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
         useMaterial3: true,
       ),
       routes: {
-        '/': (context) => Example(isar:isar),
+        '/': (context) => Example(isar: isar),
         //   '/': (context) => HomePage(),
         // '/': (context) => MapScreen(),
-        '/map': (context) => MapScreen(),
+        '/map': (context) => const MapScreen(),
         // '/': (context) => OpenContainerTransformDemo(),
         '/cart': (context) => ProductListScreen(isar: isar),
         '/detail': (context) => DetailScreen(isar: isar),
-        '/register': (context) => RegisterScreen(),
-        '/login': (context) => LoginScreen(),
-        '/profile': (context) => ProfileCheckScreen(),
+        '/register': (context) => const RegisterScreen(),
+        '/login': (context) => const LoginScreen(),
+        '/profile': (context) => const ProfileCheckScreen(),
         // '/profile': (context) => ProfileScreen(),
       },
     );

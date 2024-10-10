@@ -159,7 +159,7 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin {
                 controller: scrollController,
                 slivers: [
                   const SliverToBoxAdapter(child: MainHistory()),
-                  const SliverToBoxAdapter(child: MainListWidget()),
+                  // const SliverToBoxAdapter(child: MainListWidget()),
                   SliverPersistentHeader(
                     pinned: true,
                     delegate: _SliverAppBarDelegate(
@@ -259,10 +259,10 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin {
                         Icon(
                           Icons.add_shopping_cart,
                           color: Colors.white,
-                          size: 30,
+                          size: 24,
                         ),
                         SizedBox(
-                          width: 20,
+                          width: 5,
                         ),
                         Text(
                           'Cart',
@@ -379,50 +379,51 @@ class CategorySection extends StatelessWidget {
               height: 120,
               child: Stack(
                 children: [
+                  food.isNew == true
+                      ? Positioned(
+                    right: 5,
+                    top: 5,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Text(
+                        'New',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 10,
+                        ),
+                      ),
+                    ),
+                  )
+                      : const SizedBox(),
+                  food.isHit == true
+                      ? Positioned(
+                    right: 5,
+                    top: 5,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
+                      decoration: BoxDecoration(
+                        color: Colors.orange,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Text(
+                        'Hit',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 10,
+                        ),
+                      ),
+                    ),
+                  )
+                      : const SizedBox(),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: Image.network(food.imageUrl, width: 120, height: 120, fit: BoxFit.cover),
                   ),
-                  food.isNew == true
-                      ? Positioned(
-                          right: 5,
-                          top: 5,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: const Text(
-                              'New',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 10,
-                              ),
-                            ),
-                          ),
-                        )
-                      : const SizedBox(),
-                  food.isHit == true
-                      ? Positioned(
-                          right: 5,
-                          top: 5,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
-                            decoration: BoxDecoration(
-                              color: Colors.orange,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: const Text(
-                              'Hit',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 10,
-                              ),
-                            ),
-                          ),
-                        )
-                      : const SizedBox(),
+
                 ],
               ),
             ),
@@ -453,7 +454,7 @@ class CategorySection extends StatelessWidget {
                     style: TextButton.styleFrom(
                         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 1), minimumSize: const Size(50, 30), backgroundColor: Colors.grey.shade200),
                     child: Text(
-                      '${food.price} T',
+                      '${food.price} ₸',
                       style: const TextStyle(fontSize: 12, color: Colors.black),
                     ),
                   ),
@@ -471,7 +472,7 @@ class ExampleData {
   ExampleData._internal();
 
   static Future<PageData> fetchDataFromAPI() async {
-    final url = Uri.parse('http://192.168.0.219:80/api/v1/catalog/products');
+    final url = Uri.parse('http://192.168.0.103:80/api/v1/catalog/products');
     final response = await http.get(url, headers: {
       'Accept': 'application/json',
     });

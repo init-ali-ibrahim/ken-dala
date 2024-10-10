@@ -53,7 +53,7 @@ class _MainListWidgetState extends State<MainListWidget> {
                             style: TextButton.styleFrom(
                                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 0), minimumSize: const Size(50, 30), backgroundColor: Colors.grey.shade200),
                             child: const Text(
-                              'from 2 990 T',
+                              'from 2 990 ₸',
                               style: TextStyle(fontSize: 12, color: Colors.black),
                             ),
                           )
@@ -91,7 +91,7 @@ class _MainListWidgetState extends State<MainListWidget> {
                           style: TextButton.styleFrom(
                               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 1), minimumSize: const Size(50, 30), backgroundColor: Colors.grey.shade200),
                           child: const Text(
-                            'from 2 990 T',
+                            'from 2 990 ₸',
                             style: TextStyle(fontSize: 12, color: Colors.black),
                           ),
                         )
@@ -127,7 +127,7 @@ class _MainListWidgetState extends State<MainListWidget> {
                           style: TextButton.styleFrom(
                               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 1), minimumSize: const Size(50, 30), backgroundColor: Colors.grey.shade200),
                           child: const Text(
-                            'from 2 990 T',
+                            'from 2 990 ₸',
                             style: TextStyle(fontSize: 12, color: Colors.black),
                           ),
                         )
