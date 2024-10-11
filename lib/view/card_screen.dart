@@ -213,6 +213,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                               if (product.quantity > 0) {
                                 await updateProductQuantity(product, product.quantity - 1);
                               }
+                              productService.checkAndNavigateIfNoProducts(context);
                             },
                           ),
                           AnimatedSwitcher(

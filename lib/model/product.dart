@@ -103,4 +103,13 @@ class ProductService {
 
     return totalPrice;
   }
+
+
+  Future<void> checkAndNavigateIfNoProducts(BuildContext context) async {
+    final products = await getAllProducts();
+
+    if (products.isEmpty) {
+      Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+    }
+  }
 }

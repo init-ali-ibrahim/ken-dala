@@ -132,11 +132,11 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    if (isLoading) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
-    }
+    // if (isLoading) {
+    //   return const Scaffold(
+    //     body: Center(child: CircularProgressIndicator()),
+    //   );
+    // }
     return Scaffold(
       backgroundColor: const Color(0xFFF4F4F6),
       appBar: const PreferredSize(
@@ -149,45 +149,47 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin {
           decoration: const BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)), color: Colors.white),
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-          child: RectGetter(
-            key: listViewKey,
-            child: NotificationListener<ScrollNotification>(
-              onNotification: onScrollNotification,
-              child: CustomScrollView(
-                physics: const ClampingScrollPhysics(),
-                controller: scrollController,
-                slivers: [
-                  const SliverToBoxAdapter(child: MainHistory()),
-                  // const SliverToBoxAdapter(child: MainListWidget()),
-                  SliverPersistentHeader(
-                    pinned: true,
-                    delegate: _SliverAppBarDelegate(
-                      TabBar(
-                        splashFactory: NoSplash.splashFactory,
-                        physics: const NeverScrollableScrollPhysics(),
-                        controller: tabController,
-                        isScrollable: true,
-                        labelPadding: const EdgeInsets.symmetric(horizontal: 20),
-                        tabAlignment: TabAlignment.start,
-                        labelColor: Colors.black,
-                        unselectedLabelColor: Colors.grey,
-                        indicatorColor: Colors.transparent,
-                        dividerColor: Colors.transparent,
-                        tabs: data.categories.map((category) => Tab(text: category.title)).toList(),
-                        onTap: animateAndScrollTo,
-                      ),
+          child: isLoading
+              ? Center(child: CircularProgressIndicator())
+              : RectGetter(
+                  key: listViewKey,
+                  child: NotificationListener<ScrollNotification>(
+                    onNotification: onScrollNotification,
+                    child: CustomScrollView(
+                      physics: const ClampingScrollPhysics(),
+                      controller: scrollController,
+                      slivers: [
+                        const SliverToBoxAdapter(child: MainHistory()),
+                        // const SliverToBoxAdapter(child: MainListWidget()),
+                        SliverPersistentHeader(
+                          pinned: true,
+                          delegate: _SliverAppBarDelegate(
+                            TabBar(
+                              splashFactory: NoSplash.splashFactory,
+                              physics: const NeverScrollableScrollPhysics(),
+                              controller: tabController,
+                              isScrollable: true,
+                              labelPadding: const EdgeInsets.symmetric(horizontal: 20),
+                              tabAlignment: TabAlignment.start,
+                              labelColor: Colors.black,
+                              unselectedLabelColor: Colors.grey,
+                              indicatorColor: Colors.transparent,
+                              dividerColor: Colors.transparent,
+                              tabs: data.categories.map((category) => Tab(text: category.title)).toList(),
+                              onTap: animateAndScrollTo,
+                            ),
+                          ),
+                        ),
+                        SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) => buildCategoryItem(index),
+                            childCount: data.categories.length,
+                          ),
+                        )
+                      ],
                     ),
                   ),
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) => buildCategoryItem(index),
-                      childCount: data.categories.length,
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
+                ),
         ),
       ),
       floatingActionButton: FutureBuilder<List<Product>>(
@@ -380,49 +382,48 @@ class CategorySection extends StatelessWidget {
                 children: [
                   food.isNew == true
                       ? Positioned(
-                    right: 5,
-                    top: 5,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: const Text(
-                        'New',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 10,
-                        ),
-                      ),
-                    ),
-                  )
+                          right: 5,
+                          top: 5,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: const Text(
+                              'New',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 10,
+                              ),
+                            ),
+                          ),
+                        )
                       : const SizedBox(),
                   food.isHit == true
                       ? Positioned(
-                    right: 5,
-                    top: 5,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
-                      decoration: BoxDecoration(
-                        color: Colors.orange,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: const Text(
-                        'Hit',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 10,
-                        ),
-                      ),
-                    ),
-                  )
+                          right: 5,
+                          top: 5,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
+                            decoration: BoxDecoration(
+                              color: Colors.orange,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: const Text(
+                              'Hit',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 10,
+                              ),
+                            ),
+                          ),
+                        )
                       : const SizedBox(),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: Image.network(food.imageUrl, width: 120, height: 120, fit: BoxFit.cover),
                   ),
-
                 ],
               ),
             ),
