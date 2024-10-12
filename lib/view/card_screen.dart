@@ -64,9 +64,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
     print('Отправляем на сервер:');
     print('Токен: $authToken');
     print('Тело запроса: ${jsonEncode({"products": productData, "name": "assylzhan", "phone": "77077701465", "delivery_type": "pickup"})}');
-
-    print('');
-
     print('Тело ответа: ${response.body}');
 
     if (response.statusCode == 200 || response.statusCode == 201) {
@@ -259,23 +256,149 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      decoration: BoxDecoration(color: const Color(0xFF13181E), borderRadius: BorderRadius.circular(99)),
-                      padding: const EdgeInsets.all(15),
-                      child: const Row(
-                        children: [
-                          Icon(
-                            Icons.credit_card_outlined,
-                            color: Colors.white,
-                            size: 30,
-                          ),
-                          SizedBox(width: 20),
-                          Icon(
-                            Icons.keyboard_arrow_down_outlined,
-                            color: Colors.white,
-                            size: 30,
-                          )
-                        ],
+                    InkWell(
+                      splashFactory: NoSplash.splashFactory,
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Colors.white,
+                              ),
+                              height: 300,
+                              width: MediaQuery.of(context).size.width,
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(15),
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        InkWell(
+                                          child: Container(
+                                            padding: const EdgeInsets.all(8),
+                                            decoration: const BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors.white,
+                                            ),
+                                            child: const Icon(
+                                              Icons.close,
+                                              size: 25,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                        const Text(
+                                          'Метод оплаты',
+                                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                        ),
+                                        InkWell(
+                                          onTap: () {
+                                            Navigator.pop(context);
+                                          },
+                                          highlightColor: Colors.transparent,
+                                          splashColor: Colors.transparent,
+                                          child: Container(
+                                            padding: const EdgeInsets.all(6),
+                                            decoration: const BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Color(0xFFF4F4F6),
+                                            ),
+                                            child: const Icon(
+                                              Icons.close,
+                                              size: 20,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Container(
+                                    margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                                    height: 60,
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFFF4F4F6),
+                                      borderRadius: BorderRadius.circular(12.0),
+                                    ),
+                                    child: const Row(
+                                      children: [
+                                        Icon(
+                                          Icons.credit_card,
+                                        ),
+                                        SizedBox(width: 8.0),
+                                        Text(
+                                          'New card',
+                                          style: TextStyle(
+                                            fontSize: 16.0,
+                                          ),
+                                        ),
+                                        Spacer(),
+                                        Icon(
+                                          Icons.check,
+                                          color: Colors.redAccent,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+                                  Container(
+                                    margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                                    height: 60,
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFFF4F4F6),
+                                      borderRadius: BorderRadius.circular(12.0),
+                                    ),
+                                    child: const Row(
+                                      children: [
+                                        Icon(
+                                          Icons.credit_card,
+                                        ),
+                                        SizedBox(width: 8.0),
+                                        Text(
+                                          'New card',
+                                          style: TextStyle(
+                                            fontSize: 16.0,
+                                          ),
+                                        ),
+                                        Spacer(),
+                                        Icon(
+                                          Icons.check,
+                                          color: Colors.redAccent,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(color: const Color(0xFF13181E), borderRadius: BorderRadius.circular(99)),
+                        padding: const EdgeInsets.all(15),
+                        child: const Row(
+                          children: [
+                            Icon(
+                              Icons.credit_card_outlined,
+                              color: Colors.white,
+                              size: 30,
+                            ),
+                            SizedBox(width: 20),
+                            Icon(
+                              Icons.keyboard_arrow_down_outlined,
+                              color: Colors.white,
+                              size: 30,
+                            )
+                          ],
+                        ),
                       ),
                     ),
                     Column(

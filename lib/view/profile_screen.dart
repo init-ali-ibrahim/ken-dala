@@ -75,7 +75,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final AuthService _authService = AuthService();
+  // final AuthService _authService = AuthService();
   late FlutterSecureStorage secureStorage;
   late Future<dynamic> ordersFuture;
 
@@ -83,13 +83,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
   initState() {
     super.initState();
     secureStorage = const FlutterSecureStorage();
+
+    getUserData();
     ordersFuture = getOrders();
   }
 
   Future<List<Order>> getOrders() async {
     String? authToken = await secureStorage.read(key: 'token');
 
-    const url = 'http://192.168.0.219:80/api/v1/orders';
+    const url = 'http://192.168.0.103:80/api/v1/orders';
 
     final response = await http.get(
       Uri.parse(url),
@@ -107,6 +109,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
       return orders;
     } else {
       throw Exception('Failed to load orders');
+    }
+  }
+
+  var userDataMap = {};
+
+  Future getUserData() async {
+    String? authToken = await secureStorage.read(key: 'token');
+    const url = 'http://192.168.0.103:80/api/v1/auth/check';
+    final response = await http.post(Uri.parse(url), headers: {
+      'Authorization': 'Bearer $authToken',
+    });
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      setState(() {
+        userDataMap = jsonDecode(response.body);
+      });
+      print('User data: $userDataMap');
+    } else {
+      throw Exception('Failed to load user data');
     }
   }
 
@@ -169,205 +190,225 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: [
               const SizedBox(height: 20),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF4F4F6),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  padding: const EdgeInsets.all(16),
-                  child: const Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 20,
-                        backgroundColor: Colors.grey,
-                        child: Icon(Icons.person, color: Colors.white, size: 30),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: InkWell(
+                    splashFactory: NoSplash.splashFactory,
+                    onTap: (){
+                      Navigator.pushNamed(context, '/profile_edit');
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF4F4F6),
+                        borderRadius: BorderRadius.circular(16),
                       ),
-                      SizedBox(width: 16),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      padding: const EdgeInsets.all(16),
+                      child: Row(
                         children: [
-                          Text(
-                            'Ali',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          const CircleAvatar(
+                            radius: 20,
+                            backgroundColor: Colors.grey,
+                            child: Icon(Icons.person, color: Colors.white, size: 30),
                           ),
-                          SizedBox(height: 4),
-                          Text(
-                            '+7 706 622 3709',
-                            style: TextStyle(
-                              fontSize: 14,
-                            ),
+                          const SizedBox(width: 16),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${userDataMap['data']['name']}',
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              const Text(
+                                '+7 706 622 3709',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
                           ),
+                          const Spacer(),
+                          const Icon(Icons.arrow_forward_ios, size: 20),
                         ],
                       ),
-                      Spacer(),
-                      Icon(Icons.arrow_forward_ios, size: 20),
-                    ],
-                  ),
-                ),
-              ),
+                    ),
+                  )),
               const SizedBox(height: 20),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                child: Text('Orders', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              ),
               FutureBuilder<List<Order>>(
                 future: getOrders(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
+                    return const CartEmpty();
                   } else if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
+                    return const CartEmpty();
                   } else if (snapshot.hasData) {
                     var orders = snapshot.data!;
 
                     if (orders.isEmpty) {
-                      return Column(
-                        children: [
-                          const Icon(
-                            Icons.history,
-                            size: 60,
-                          ),
-                          const SizedBox(height: 10),
-                          const Text(
-                            'Your order history will appear here',
-                            style: TextStyle(
-                              fontSize: 16,
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                              padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 16),
-                            ),
-                            child: const Text(
-                              'LogOut',
-                              style: TextStyle(fontSize: 18, color: Colors.white),
-                            ),
-                          ),
-                          const SizedBox(height: 40),
-                        ],
-                      );
+                      return const CartEmpty();
                     }
 
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: Column(
-                        children: orders.map((order) {
-                          return Container(
-                              margin: const EdgeInsets.symmetric(vertical: 5),
-                              padding: const EdgeInsets.all(15),
-                              height: 160,
-                              width: MediaQuery.of(context).size.width,
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFF4F4F6),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                      child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text('Order ${order.id} - ${order.name}', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                                      const SizedBox(height: 4),
-                                      Text('${order.orderedAt}'),
-                                      const SizedBox(height: 10),
-                                      Row(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        children: order.products.asMap().entries.map((entry) {
-                                          int index = entry.key;
-                                          var product = entry.value;
-
-                                          if (index < 2) {
-                                            return Padding(
-                                              padding: const EdgeInsets.symmetric(vertical: 4.0),
-                                              child: ClipRRect(
-                                                borderRadius: BorderRadius.circular(99),
-                                                child: Image.network(
-                                                  product.imageUrl,
-                                                  height: 60,
-                                                  width: 60,
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                            );
-                                          } else if (index == 2) {
-                                            return Padding(
-                                              padding: const EdgeInsets.symmetric(vertical: 4.0),
-                                              child: ClipRRect(
-                                                borderRadius: BorderRadius.circular(99),
-                                                child: Container(
-                                                  height: 60,
-                                                  width: 60,
-                                                  color: Colors.grey[200],
-                                                  child: const Icon(Icons.more_horiz, size: 30),
-                                                ),
-                                              ),
-                                            );
-                                          }
-                                          return Container();
-                                        }).toList(),
-                                      )
-                                    ],
-                                  )),
-                                  Container(
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment: CrossAxisAlignment.end,
+                      child: Column(children: [
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                          child: Text('Заказы', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                        ),
+                        Column(
+                          children: orders.map((order) {
+                            return Container(
+                                margin: const EdgeInsets.symmetric(vertical: 5),
+                                padding: const EdgeInsets.all(15),
+                                height: 160,
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFF4F4F6),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                        child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          order.status,
-                                          style: const TextStyle(color: Colors.green),
-                                        ),
-                                        const Text(
-                                          '20 T',
-                                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                                        ),
+                                        Text('Order ${order.id} - ${order.name}', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                        const SizedBox(height: 4),
+                                        Text('${order.orderedAt}'),
+                                        const SizedBox(height: 10),
+                                        Row(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: order.products.asMap().entries.map((entry) {
+                                            int index = entry.key;
+                                            var product = entry.value;
+
+                                            if (index < 2) {
+                                              return Padding(
+                                                padding: const EdgeInsets.symmetric(vertical: 4.0),
+                                                child: ClipRRect(
+                                                  borderRadius: BorderRadius.circular(99),
+                                                  child: Image.network(
+                                                    product.imageUrl,
+                                                    height: 60,
+                                                    width: 60,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              );
+                                            } else if (index == 2) {
+                                              return Padding(
+                                                padding: const EdgeInsets.symmetric(vertical: 4.0),
+                                                child: ClipRRect(
+                                                  borderRadius: BorderRadius.circular(99),
+                                                  child: Container(
+                                                    height: 60,
+                                                    width: 60,
+                                                    color: Colors.grey[200],
+                                                    child: const Icon(Icons.more_horiz, size: 30),
+                                                  ),
+                                                ),
+                                              );
+                                            }
+                                            return Container();
+                                          }).toList(),
+                                        )
                                       ],
-                                    ),
-                                  )
-                                ],
-                              ));
-                        }).toList(),
-                      ),
+                                    )),
+                                    Container(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        children: [
+                                          Text(
+                                            order.status,
+                                            style: const TextStyle(color: Colors.green),
+                                          ),
+                                          const Text(
+                                            '20 T',
+                                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ));
+                          }).toList(),
+                        )
+                      ]),
                     );
                   } else {
                     return const Center(child: Text('No orders found'));
                   }
                 },
               ),
-              ElevatedButton(
-                onPressed: () {
-                  _authService.logout();
-                  Navigator.pushNamedAndRemoveUntil(context, '/profile', (Route<dynamic> route) => false);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 16),
-                ),
-                child: const Text(
-                  'LogOut',
-                  style: TextStyle(fontSize: 18, color: Colors.white),
-                ),
-              ),
             ],
           ),
         ));
+  }
+}
+
+class CartEmpty extends StatelessWidget {
+  const CartEmpty({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+        child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const SizedBox(height: 30),
+        Stack(
+          children: [
+            ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Container(
+                  width: MediaQuery.of(context).size.width - 40,
+                  height: MediaQuery.of(context).size.width - 40,
+                  child: Image.asset(
+                    'assets/images/cartEmpty.png',
+                    fit: BoxFit.cover,
+                  ),
+                )),
+            Container(
+              width: MediaQuery.of(context).size.width - 40,
+              height: MediaQuery.of(context).size.width - 40,
+              decoration: BoxDecoration(
+                color: Colors.red.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(60),
+              ),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width - 40,
+              height: MediaQuery.of(context).size.width - 40,
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(60),
+              ),
+            )
+          ],
+        ),
+        const SizedBox(height: 10),
+        SizedBox(
+          width: MediaQuery.of(context).size.width - 40,
+          child: const Text(
+            textAlign: TextAlign.center,
+            'У вас пока корзина пуста, можите добавить товары',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        const SizedBox(height: 40),
+      ],
+    ));
   }
 }
