@@ -367,8 +367,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
               ),
             ),
             TextButton(
-              onPressed: () {
-                clearProduct();
+              onPressed: () async {
+                await clearProduct();
                 Navigator.pushNamedAndRemoveUntil(context, '/', (Route<dynamic> route) => false);
               },
               child: const Text(

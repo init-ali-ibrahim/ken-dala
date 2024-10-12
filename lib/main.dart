@@ -14,6 +14,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:ken_dala/view/profile_screen.dart';
 // import 'package:ken_dala/example.dart';
 
+final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -50,6 +52,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
         useMaterial3: true,
       ),
+
+      navigatorObservers: [routeObserver],
       routes: {
         '/': (context) => Example(isar: isar),
         //   '/': (context) => HomePage(),

@@ -8,6 +8,8 @@ import 'package:rect_getter/rect_getter.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:http/http.dart' as http;
 
+import 'main.dart';
+
 class Example extends StatefulWidget {
   const Example({super.key, required this.isar});
 
@@ -17,7 +19,7 @@ class Example extends StatefulWidget {
   State<Example> createState() => _ExampleState();
 }
 
-class _ExampleState extends State<Example> with TickerProviderStateMixin {
+class _ExampleState extends State<Example> with TickerProviderStateMixin, RouteAware {
   late AutoScrollController scrollController;
   late TabController tabController;
   late PageData data;
@@ -25,44 +27,24 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin {
   Map<int, dynamic> itemKeys = {};
   late ProductService _productService;
   late AnimationController _controller;
-  late Animation<Offset> _animation;
   bool isLoading = true;
+
+  late Future<List<Product>> _futureProducts;
 
   @override
   void initState() {
     super.initState();
-    _loadData();
     _productService = ProductService(widget.isar);
+
+    _futureProducts = _productService.getAllProducts();
+
+    _loadData();
     scrollController = AutoScrollController();
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1500),
     );
-    _animation = TweenSequence<Offset>([
-      TweenSequenceItem(
-        tween: Tween<Offset>(
-          begin: Offset.zero,
-          end: const Offset(0.0, -0.3),
-        ),
-        weight: 1.2 / 3,
-      ),
-      TweenSequenceItem(
-        tween: ConstantTween<Offset>(const Offset(0.0, -0.3)),
-        weight: 1.5 / 3,
-      ),
-      TweenSequenceItem(
-        tween: Tween<Offset>(
-          begin: const Offset(0.0, -0.3),
-          end: Offset.zero,
-        ),
-        weight: 1.2 / 3,
-      ),
-    ]).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeInOut,
-      ),
-    );
+
     _controller.forward();
   }
 
@@ -82,10 +64,31 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final modalRoute = ModalRoute.of(context);
+
+    if (modalRoute is PageRoute) {
+      routeObserver.subscribe(this, modalRoute);
+    }
+  }
+
+  @override
+  void didPopNext() {
+    setState(() {
+      _futureProducts = _productService.getAllProducts();
+    });
+  }
+
+  @override
   void dispose() {
     _controller.dispose();
     scrollController.dispose();
     tabController.dispose();
+
+    routeObserver.unsubscribe(this);
+
     super.dispose();
   }
 
@@ -150,7 +153,7 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin {
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           child: isLoading
-              ? Center(child: CircularProgressIndicator())
+              ? const Center(child: CircularProgressIndicator())
               : RectGetter(
                   key: listViewKey,
                   child: NotificationListener<ScrollNotification>(
@@ -193,10 +196,10 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin {
         ),
       ),
       floatingActionButton: FutureBuilder<List<Product>>(
-        future: _productService.getAllProducts(),
+        future: _futureProducts,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const SizedBox();
+            return const Center(child: CircularProgressIndicator());
           }
 
           if (snapshot.hasData && snapshot.data!.isNotEmpty) {
@@ -204,77 +207,37 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin {
               onTap: () {
                 Navigator.pushNamed(context, '/cart');
               },
-              child: SlideTransition(
-                position: _animation,
-                child: Container(
-                  padding: const EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  child: const SizedBox(
-                    width: 140,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.add_shopping_cart,
-                          color: Colors.white,
-                          size: 22,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'totalPrice',
-                          style: TextStyle(color: Colors.white, fontSize: 20),
-                        ),
-                      ],
-                    ),
+              child: Container(
+                padding: const EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                child: const SizedBox(
+                  width: 140,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.add_shopping_cart,
+                        color: Colors.white,
+                        size: 22,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        'totalPrice',
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                    ],
                   ),
                 ),
               ),
             );
           } else {
-            // return const SizedBox();
-
-            return InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, '/cart');
-              },
-              child: SlideTransition(
-                position: _animation,
-                child: Container(
-                  padding: const EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  child: const SizedBox(
-                    width: 100,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.add_shopping_cart,
-                          color: Colors.white,
-                          size: 24,
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Text(
-                          'Cart',
-                          style: TextStyle(color: Colors.white, fontSize: 20),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            );
+            return const SizedBox();
           }
         },
       ),

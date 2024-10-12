@@ -61,12 +61,12 @@ class _MainAppbarState extends State<MainAppbar> {
             ],
           ),
           IconButton(
-              style: IconButton.styleFrom(backgroundColor: Colors.red),
+              style: IconButton.styleFrom(backgroundColor: Colors.white),
               onPressed: () {
                 Navigator.pushNamed(context, '/profile');
               },
               icon: const Icon(
-                Icons.man,
+                Icons.emoji_emotions,
                 color: Colors.red,
               )),
         ],
