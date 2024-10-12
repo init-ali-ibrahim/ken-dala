@@ -42,7 +42,7 @@ class _MainAppbarState extends State<MainAppbar> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        'Almaty, 11 th microstructure, 36',
+                        'Алматы, 11-й микрорайон, 36',
                         style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                       ),
                       Icon(
@@ -54,7 +54,7 @@ class _MainAppbarState extends State<MainAppbar> {
                   RichText(
                       text: const TextSpan(
                     style: TextStyle(fontSize: 12, color: Colors.grey),
-                    children: [TextSpan(text: 'Free delivery, '), TextSpan(text: 'in about 33 min', style: TextStyle(color: Colors.green))],
+                    children: [TextSpan(text: 'Бесплатная доставка, '), TextSpan(text: 'через 33 минуты', style: TextStyle(color: Colors.green))],
                   )),
                 ],
               )

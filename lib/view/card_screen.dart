@@ -246,6 +246,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
       ),
       bottomNavigationBar: Container(
         width: MediaQuery.of(context).size.width,
+        decoration: const BoxDecoration(border: Border(top: BorderSide(width: 1, color: Colors.grey))),
         height: 160,
         margin: const EdgeInsets.only(top: 10),
         child: Container(

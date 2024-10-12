@@ -1,14 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
+import 'package:ken_dala/main.dart';
 import 'package:ken_dala/model/product.dart';
 import 'package:ken_dala/view/widgets/main_appbar.dart';
-import 'package:ken_dala/view/widgets/main_history.dart';
 import 'package:rect_getter/rect_getter.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:http/http.dart' as http;
-
-import 'main.dart';
 
 class Example extends StatefulWidget {
   const Example({super.key, required this.isar});
@@ -135,11 +133,6 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin, RouteA
 
   @override
   Widget build(BuildContext context) {
-    // if (isLoading) {
-    //   return const Scaffold(
-    //     body: Center(child: CircularProgressIndicator()),
-    //   );
-    // }
     return Scaffold(
       backgroundColor: const Color(0xFFF4F4F6),
       appBar: const PreferredSize(
@@ -162,7 +155,7 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin, RouteA
                       physics: const ClampingScrollPhysics(),
                       controller: scrollController,
                       slivers: [
-                        const SliverToBoxAdapter(child: MainHistory()),
+                        // const SliverToBoxAdapter(child: MainHistory()),
                         // const SliverToBoxAdapter(child: MainListWidget()),
                         SliverPersistentHeader(
                           pinned: true,
@@ -203,38 +196,84 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin, RouteA
           }
 
           if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+            final products = snapshot.data!;
+            final totalPrice = products.fold<int>(
+              0,
+              (sum, product) => sum + int.parse(product.price) * product.quantity,
+            );
+
             return InkWell(
               onTap: () {
                 Navigator.pushNamed(context, '/cart');
               },
               child: Container(
-                padding: const EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.circular(100),
-                ),
-                child: const SizedBox(
-                  width: 140,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.add_shopping_cart,
-                        color: Colors.white,
-                        size: 22,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        'totalPrice',
-                        style: TextStyle(color: Colors.white, fontSize: 20),
-                      ),
-                    ],
+                  padding: const EdgeInsets.all(7),
+                  width: 200,
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(100),
                   ),
-                ),
-              ),
+                  child: Stack(
+                    children: [
+                      if (products.isNotEmpty)
+                        Positioned(
+                          right: 0,
+                          child: Container(
+                            decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.white, width: 2)),
+                            child: ClipOval(
+                              child: Image.network(
+                                products[0].images,
+                                width: 45,
+                                height: 45,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                      const SizedBox(width: 10),
+                      if (products.length > 1)
+                        Positioned(
+                            right: 25,
+                            child: Container(
+                              decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.white, width: 2)),
+                              child: ClipOval(
+                                child: Image.network(
+                                  products[1].images,
+                                  width: 45,
+                                  height: 45,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            )),
+                      const SizedBox(width: 10),
+                      if (products.length > 2)
+                        Positioned(
+                            right: 50,
+                            child: Container(
+                              decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.white, width: 2)),
+                              child: ClipOval(
+                                child: Image.network(
+                                  products[2].images,
+                                  width: 45,
+                                  height: 45,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            )),
+                      const SizedBox(width: 10, height: 50),
+                      Positioned(
+                          left: 10,
+                          child: SizedBox(
+                            height: 50,
+                            child: Center(
+                              child: Text(
+                                '₸ $totalPrice',
+                                style: const TextStyle(color: Colors.white, fontSize: 20),
+                              ),
+                            ),
+                          ))
+                    ],
+                  )),
             );
           } else {
             return const SizedBox();
@@ -464,7 +503,7 @@ class ExampleData {
     }).toList();
 
     Category category = Category(
-      title: "All Dishes",
+      title: "Категория",
       foods: foods,
     );
 
@@ -513,13 +552,3 @@ class Food {
     required this.isHit,
   });
 }
-
-// class ProductService {
-//   final Isar isar;
-//
-//   ProductService(this.isar);
-//
-//   Future<List<Product>> getAllProducts() async {
-//     return await isar.products.where().findAll();
-//   }
-// }
