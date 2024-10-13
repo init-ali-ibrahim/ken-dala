@@ -83,8 +83,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   initState() {
     super.initState();
     secureStorage = const FlutterSecureStorage();
-
-    getUserData();
     ordersFuture = getOrders();
   }
 
@@ -112,20 +110,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  var userDataMap = {};
-
-  Future getUserData() async {
+  Future<Map<String, dynamic>> getUserData() async {
     String? authToken = await secureStorage.read(key: 'token');
     const url = 'http://192.168.0.103:80/api/v1/auth/check';
     final response = await http.post(Uri.parse(url), headers: {
       'Authorization': 'Bearer $authToken',
     });
 
+    Future.delayed(const Duration(seconds: 2));
+
     if (response.statusCode == 200 || response.statusCode == 201) {
-      setState(() {
-        userDataMap = jsonDecode(response.body);
-      });
-      print('User data: $userDataMap');
+      print(jsonDecode(response.body));
+
+      return jsonDecode(response.body);
     } else {
       throw Exception('Failed to load user data');
     }
@@ -145,7 +142,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 InkWell(
                   onTap: () {
-                    Navigator.pop(context, '/');
+                    Navigator.pop(context);
                   },
                   borderRadius: const BorderRadius.all(Radius.circular(99)),
                   child: Container(
@@ -189,52 +186,65 @@ class _ProfileScreenState extends State<ProfileScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 20),
-              Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: InkWell(
-                    splashFactory: NoSplash.splashFactory,
-                    onTap: (){
-                      Navigator.pushNamed(context, '/profile_edit');
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFF4F4F6),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      padding: const EdgeInsets.all(16),
-                      child: Row(
-                        children: [
-                          const CircleAvatar(
-                            radius: 20,
-                            backgroundColor: Colors.grey,
-                            child: Icon(Icons.person, color: Colors.white, size: 30),
+              FutureBuilder<Map<String, dynamic>>(
+                future: getUserData(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const UserEmpty();
+                  } else if (snapshot.hasError) {
+                    return const UserEmpty();
+                  } else if (snapshot.hasData) {
+                    var userData = snapshot.data;
+
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: InkWell(
+                        splashFactory: NoSplash.splashFactory,
+                        onTap: () {
+                          // Navigator.pushNamed(context, '/profile_edit');
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF4F4F6),
+                            borderRadius: BorderRadius.circular(16),
                           ),
-                          const SizedBox(width: 16),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          padding: const EdgeInsets.all(16),
+                          child: Row(
                             children: [
-                              Text(
-                                '${userDataMap['data']['name']}',
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                              const CircleAvatar(
+                                radius: 20,
+                                backgroundColor: Colors.grey,
+                                child: Icon(Icons.person, color: Colors.white, size: 30),
                               ),
-                              const SizedBox(height: 4),
-                              const Text(
-                                '+7 706 622 3709',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                ),
+                              const SizedBox(width: 16),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '${userData!['data']['name'] ?? 'error'}',
+                                    style: const TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.w500),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    '${userData['data']['phone'] ?? 'error'}',
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
                               ),
+                              const Spacer(),
+                              const Icon(Icons.arrow_forward_ios, size: 20),
                             ],
                           ),
-                          const Spacer(),
-                          const Icon(Icons.arrow_forward_ios, size: 20),
-                        ],
+                        ),
                       ),
-                    ),
-                  )),
+                    );
+                  } else {
+                    return const UserEmpty();
+                  }
+                },
+              ),
               const SizedBox(height: 20),
               FutureBuilder<List<Order>>(
                 future: getOrders(),
@@ -343,7 +353,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ]),
                     );
                   } else {
-                    return const Center(child: Text('No orders found'));
+                    return const CartEmpty();
                   }
                 },
               ),
@@ -410,5 +420,65 @@ class CartEmpty extends StatelessWidget {
         const SizedBox(height: 40),
       ],
     ));
+  }
+}
+
+class UserEmpty extends StatefulWidget {
+  const UserEmpty({super.key});
+
+  @override
+  State<UserEmpty> createState() => _UserEmptyState();
+}
+
+class _UserEmptyState extends State<UserEmpty> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: InkWell(
+        splashFactory: NoSplash.splashFactory,
+        onTap: () {
+          // Navigator.pushNamed(context, '/profile_edit');
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            color: const Color(0xFFF4F4F6),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          padding: const EdgeInsets.all(16),
+          child: const Row(
+            children: [
+              CircleAvatar(
+                radius: 20,
+                backgroundColor: Colors.grey,
+                child: Icon(Icons.person, color: Colors.white, size: 30),
+              ),
+              SizedBox(width: 16),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    '',
+                    style: TextStyle(
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+              Spacer(),
+              Icon(Icons.arrow_forward_ios, size: 20),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

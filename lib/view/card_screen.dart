@@ -186,11 +186,11 @@ class _ProductListScreenState extends State<ProductListScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(99),
                           child: Image.network(
                             product.images,
-                            width: 80,
-                            height: 80,
+                            width: 70,
+                            height: 70,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -346,7 +346,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                       ],
                                     ),
                                   ),
-
                                   Container(
                                     margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
                                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
@@ -471,6 +470,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
@@ -478,7 +478,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
             padding: EdgeInsets.only(top: 10, right: 10),
             child: Text(
               'Очистить все товары из корзины',
-              style: TextStyle(fontSize: 14, color: Colors.black),
+              style: TextStyle(fontSize: 15, color: Colors.black),
             ),
           ),
           actionsAlignment: MainAxisAlignment.end,

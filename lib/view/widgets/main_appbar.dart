@@ -12,8 +12,8 @@ class _MainAppbarState extends State<MainAppbar> {
   Widget build(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
-      backgroundColor: const Color(0xFFF0F1F4),
-      surfaceTintColor: const Color(0xFFF0F1F4),
+      backgroundColor: const Color(0xFFF4F4F6),
+      surfaceTintColor: const Color(0xFFF4F4F6),
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,

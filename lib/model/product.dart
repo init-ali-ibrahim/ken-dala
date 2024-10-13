@@ -26,7 +26,6 @@ class Product {
 class ProductService {
   final Isar isar;
   final ValueNotifier<int> totalPriceNotifier = ValueNotifier(0);
-  final ValueNotifier<int> quantitySingleProductNotifier = ValueNotifier(0);
 
   ProductService(this.isar){
     _updateTotalPrice();
@@ -41,9 +40,8 @@ class ProductService {
       await isar.writeTxn(() async {
         await isar.products.put(product);
       });
-    } catch (e, stackTrace) {
+    } catch (e) {
       print("Error in addProduct: $e");
-      print("Stack trace: $stackTrace");
     }
 
     await _updateTotalPrice();

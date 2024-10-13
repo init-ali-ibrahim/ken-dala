@@ -195,7 +195,7 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin, RouteA
             return const Center(child: CircularProgressIndicator());
           }
 
-          if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+          if (snapshot.hasData && snapshot.data!.isNotEmpty && isLoading == false) {
             final products = snapshot.data!;
             final totalPrice = products.fold<int>(
               0,
@@ -372,7 +372,7 @@ class CategorySection extends StatelessWidget {
       },
       splashColor: Colors.transparent,
       child: Container(
-        margin: const EdgeInsets.only(top: 10),
+        margin: const EdgeInsets.only(top: 10, left: 8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -382,7 +382,11 @@ class CategorySection extends StatelessWidget {
               height: 120,
               child: Stack(
                 children: [
-                  food.isNew == true
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(99),
+                    child: Image.network(food.imageUrl, width: 120, height: 120, fit: BoxFit.cover),
+                  ),
+                  food.isNew == false
                       ? Positioned(
                           right: 5,
                           top: 5,
@@ -422,10 +426,6 @@ class CategorySection extends StatelessWidget {
                           ),
                         )
                       : const SizedBox(),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.network(food.imageUrl, width: 120, height: 120, fit: BoxFit.cover),
-                  ),
                 ],
               ),
             ),
@@ -438,17 +438,17 @@ class CategorySection extends StatelessWidget {
                   Text(
                     food.name,
                     style: const TextStyle(
-                      fontSize: 16,
+                      fontSize: 14,
                       color: Colors.black,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     food.description,
-                    style: const TextStyle(color: Colors.grey, fontSize: 14),
+                    style: const TextStyle(color: Colors.grey, fontSize: 12),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 4),
                   TextButton(
                     onPressed: () {
                       Navigator.pushNamed(context, '/detail', arguments: food);
