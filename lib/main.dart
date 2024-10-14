@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => Example(isar: isar),
         // '/': (context) => MapScreen(),
-        '/map': (context) => const MapScreen(),
+        '/map': (context) => MapScreen(),
         '/cart': (context) => ProductListScreen(isar: isar),
         '/detail': (context) => DetailScreen(isar: isar),
         '/register': (context) => const RegisterScreen(),

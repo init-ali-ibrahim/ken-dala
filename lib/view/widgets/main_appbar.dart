@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 
-class MainAppbar extends StatefulWidget {
+class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
   const MainAppbar({super.key});
 
-  @override
-  State<MainAppbar> createState() => _MainAppbarState();
-}
-
-class _MainAppbarState extends State<MainAppbar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -25,7 +20,7 @@ class _MainAppbarState extends State<MainAppbar> {
               IconButton(
                   style: IconButton.styleFrom(backgroundColor: Colors.white, padding: const EdgeInsets.all(0)),
                   onPressed: () {
-                    // Navigator.pushNamed(context, '/profile');
+                    Navigator.pushNamed(context, '/map');
                   },
                   icon: const Icon(
                     Icons.man,
@@ -73,4 +68,7 @@ class _MainAppbarState extends State<MainAppbar> {
       ),
     );
   }
+
+  @override
+  Size get preferredSize => const Size(double.infinity, kToolbarHeight + 8);
 }

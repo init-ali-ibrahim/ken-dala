@@ -26,6 +26,9 @@ dependencies:
   latlong2: ^0.9.1
   skeletonizer: ^1.4.2
   flutter_launcher_icons: ^0.14.1
+  google_maps_flutter: ^2.9.0
+  geocoding: ^3.0.0
+  sliding_up_panel: ^2.0.0+1
 
 
 dev_dependencies:

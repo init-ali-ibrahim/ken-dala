@@ -135,10 +135,7 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin, RouteA
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF4F4F6),
-      appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight + 8),
-        child: MainAppbar(),
-      ),
+      appBar: const MainAppbar(),
       body: ClipRRect(
         borderRadius: const BorderRadius.only(topRight: Radius.circular(30), topLeft: Radius.circular(30)),
         child: Container(
@@ -208,70 +205,79 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin, RouteA
               },
               child: Container(
                   padding: const EdgeInsets.all(7),
-                  width: 200,
+                  height: 70,
                   decoration: BoxDecoration(
                     color: Colors.red,
                     borderRadius: BorderRadius.circular(100),
                   ),
-                  child: Stack(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      if (products.isNotEmpty)
-                        Positioned(
-                          right: 0,
-                          child: Container(
-                            decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.white, width: 2)),
-                            child: ClipOval(
-                              child: Image.network(
-                                products[0].images,
-                                width: 45,
-                                height: 45,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
+                      Container(
+                        margin: const EdgeInsets.only(left: 10),
+                        child: Center(
+                          child: Text(
+                            '₸ $totalPrice',
+                            style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w500),
                           ),
                         ),
-                      const SizedBox(width: 10),
-                      if (products.length > 1)
-                        Positioned(
-                            right: 25,
-                            child: Container(
-                              decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.white, width: 2)),
-                              child: ClipOval(
-                                child: Image.network(
-                                  products[1].images,
-                                  width: 45,
-                                  height: 45,
-                                  fit: BoxFit.cover,
+                      ),
+                      const SizedBox(width: 8),
+                      Container(
+                        width: 100,
+                        child: Stack(
+                          alignment: Alignment.centerRight,
+                          children: [
+                            if (products.isNotEmpty)
+                              Positioned(
+                                right: 0,
+                                child: Container(
+                                  decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.white, width: 2)),
+                                  child: ClipOval(
+                                    child: Image.network(
+                                      products[0].images,
+                                      width: 45,
+                                      height: 45,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
                                 ),
                               ),
-                            )),
-                      const SizedBox(width: 10),
-                      if (products.length > 2)
-                        Positioned(
-                            right: 50,
-                            child: Container(
-                              decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.white, width: 2)),
-                              child: ClipOval(
-                                child: Image.network(
-                                  products[2].images,
-                                  width: 45,
-                                  height: 45,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            )),
-                      const SizedBox(width: 10, height: 50),
-                      Positioned(
-                          left: 10,
-                          child: SizedBox(
-                            height: 50,
-                            child: Center(
-                              child: Text(
-                                '₸ $totalPrice',
-                                style: const TextStyle(color: Colors.white, fontSize: 20),
-                              ),
-                            ),
-                          ))
+                            const SizedBox(width: 10),
+                            if (products.length > 1)
+                              Positioned(
+                                  right: 25,
+                                  child: Container(
+                                    decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.white, width: 2)),
+                                    child: ClipOval(
+                                      child: Image.network(
+                                        products[1].images,
+                                        width: 45,
+                                        height: 45,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  )),
+                            const SizedBox(width: 10),
+                            if (products.length > 2)
+                              Positioned(
+                                  right: 50,
+                                  child: Container(
+                                    decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.white, width: 2)),
+                                    child: ClipOval(
+                                      child: Image.network(
+                                        products[2].images,
+                                        width: 45,
+                                        height: 45,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  )),
+                            const SizedBox(width: 10, height: 50),
+                          ],
+                        ),
+                      )
                     ],
                   )),
             );

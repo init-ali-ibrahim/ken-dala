@@ -1,8 +1,8 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -12,80 +12,98 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
-  LatLng? selectedLocation;
-  var _lastTap = 'аддресс';
+  Set<Marker> _markers = {};
+  final storage = const FlutterSecureStorage();
+  String _selectedStreet = '';
+  String _selectedDistrict = '';
+  final LatLng _center = const LatLng(43.220189, 76.876802);
 
-  void _handleTap(TapPosition tapPosition, LatLng latLng) {
-    setState(() {
-      selectedLocation = latLng;
-    });
-    _getAddressFromLatLng(latLng);
-    print('Вы нажали на карту: ${latLng.latitude}, ${latLng.longitude}');
+  Future<void> _setMarkerIcon() async {
+    _getAddressFromLatLng(_center);
   }
 
   Future<void> _getAddressFromLatLng(LatLng latLng) async {
-    final url = 'https://nominatim.openstreetmap.org/reverse?format=json&lat=${latLng.latitude}&lon=${latLng.longitude}';
-
-    print(url);
-    final response = await http.get(Uri.parse(url));
-
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      final address = data['display_name'];
-      setState(() {
-        _lastTap = 'Адрес: $address';
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(latLng.latitude, latLng.longitude);
+      Placemark place = placemarks[0];
+      setState(() async {
+        _selectedStreet = '${place.street}';
+        _selectedDistrict = '${place.subLocality}';
       });
-    } else {
-      setState(() {
-        _lastTap = 'Ошибка получения адреса';
-      });
+    } catch (e) {
+      print(e);
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _setMarkerIcon();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('data'),
+        title: const Text('Карта'),
       ),
-      body: Stack(
-        children: [
-          FlutterMap(
-            options: MapOptions(
-              initialCenter: const LatLng(43.2565, 76.9285),
-              initialZoom: 13.0,
-              onTap: _handleTap,
-            ),
-            children: [
-              TileLayer(
-                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                userAgentPackageName: 'com.example.flutter_map_example',
-              ),
-            ],
-          ),
-          const Center(
-            child: Icon(Icons.location_on, color: Colors.red, size: 40.0),
-          ),
+      body: SlidingUpPanel(
+        boxShadow: const [
+          BoxShadow(
+            blurRadius: 0.0,
+            color: Color.fromRGBO(0, 0, 0, 0),
+          )
         ],
-      ),
-      bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-          border: Border(top: BorderSide(color: Colors.black, width: 1)),
+        
+        header: Text('data'),
+        
+        panel: BottomSheet(
+          shadowColor: Colors.transparent,
+          elevation: 0,
+          backgroundColor: Colors.white,
+          onClosing: () {},
+          builder: (context) {
+            return Container(
+              height: 100,
+              child: TextButton(
+                  onPressed: () async {
+                    await _getAddressFromLatLng(_markers.first.position);
+                    await storage.write(key: 'streetCart', value: _selectedStreet);
+                    await storage.write(key: 'districtCart', value: _selectedDistrict);
+
+                    print('Выбран адрес: $_selectedStreet, $_selectedDistrict');
+                  },
+                  child: const Text('data')),
+            );
+          },
         ),
-        height: 100,
-        width: MediaQuery.of(context).size.width,
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: TextButton(
-            style: TextButton.styleFrom(backgroundColor: Colors.red),
-            child: Text(
-              _lastTap, // Показываем текст с адресом или ошибкой
-              style: const TextStyle(color: Colors.white),
+        body: Stack(
+          children: [
+            GoogleMap(
+              initialCameraPosition: CameraPosition(
+                target: _center,
+                zoom: 12,
+              ),
+              onMapCreated: (controller) {
+                print('Google Map создан успешно');
+              },
+              markers: _markers,
+              onCameraMove: (CameraPosition position) {
+                setState(() {
+                  _markers = {
+                    Marker(markerId: const MarkerId('center_marker'), position: position.target, alpha: 0),
+                  };
+                });
+              },
             ),
-            onPressed: () {
-              // Здесь можно добавить дополнительное действие
-            },
-          ),
+            const Positioned.fill(
+              top: -35,
+              child: Align(
+                alignment: Alignment.center,
+                child: Icon(Icons.location_on, size: 50, color: Colors.red),
+              ),
+            ),
+          ],
         ),
       ),
     );
