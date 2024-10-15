@@ -21,7 +21,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
 
   late FlutterSecureStorage secureStorage;
 
-  String sendUrl = 'http://192.168.43.174:80/api/v1/orders';
+  String sendUrl = 'http://192.168.0.103:80/api/v1/orders';
 
   @override
   void initState() {

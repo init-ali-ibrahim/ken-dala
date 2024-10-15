@@ -202,9 +202,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: InkWell(
                         splashFactory: NoSplash.splashFactory,
-                        onTap: () {
-                          // Navigator.pushNamed(context, '/profile_edit');
-                        },
+                        // onTap: () {
+                        // },
                         child: Container(
                           decoration: BoxDecoration(
                             color: const Color(0xFFF4F4F6),

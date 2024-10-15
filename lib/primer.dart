@@ -204,8 +204,8 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin, RouteA
                 Navigator.pushNamed(context, '/cart');
               },
               child: Container(
-                  padding: const EdgeInsets.all(7),
-                  height: 70,
+                  padding: const EdgeInsets.symmetric(horizontal: 7),
+                  height: 60,
                   decoration: BoxDecoration(
                     color: Colors.red,
                     borderRadius: BorderRadius.circular(100),
@@ -215,11 +215,11 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin, RouteA
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
-                        margin: const EdgeInsets.only(left: 10),
+                        margin: const EdgeInsets.only(left: 5),
                         child: Center(
                           child: Text(
                             '₸ $totalPrice',
-                            style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w500),
+                            style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500),
                           ),
                         ),
                       ),
@@ -237,8 +237,8 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin, RouteA
                                   child: ClipOval(
                                     child: Image.network(
                                       products[0].images,
-                                      width: 45,
-                                      height: 45,
+                                      width: 40,
+                                      height: 40,
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -253,8 +253,8 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin, RouteA
                                     child: ClipOval(
                                       child: Image.network(
                                         products[1].images,
-                                        width: 45,
-                                        height: 45,
+                                        width: 40,
+                                        height: 40,
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -268,8 +268,8 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin, RouteA
                                     child: ClipOval(
                                       child: Image.network(
                                         products[2].images,
-                                        width: 45,
-                                        height: 45,
+                                        width: 40,
+                                        height: 40,
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -347,7 +347,7 @@ class CategorySection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
+      padding: const EdgeInsets.only(left: 10, right: 13),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
