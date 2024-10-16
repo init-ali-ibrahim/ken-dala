@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:isar/isar.dart';
 import 'package:ken_dala/main.dart';
 import 'package:ken_dala/model/product.dart';
@@ -43,8 +44,18 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin, RouteA
       duration: const Duration(milliseconds: 1500),
     );
 
+    initialization();
+
     _controller.forward();
   }
+
+  void initialization() async {
+    print('ready in 1...');
+    await Future.delayed(const Duration(seconds: 1));
+    print('go!');
+    FlutterNativeSplash.remove();
+  }
+
 
   Future<void> _loadData() async {
     try {
@@ -351,9 +362,12 @@ class CategorySection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            category.title,
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: Text(
+              category.title,
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
           ),
           const SizedBox(height: 10),
           _buildFoodTileList(context),
