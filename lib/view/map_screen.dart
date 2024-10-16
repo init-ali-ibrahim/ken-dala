@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -18,6 +19,10 @@ class _MapScreenState extends State<MapScreen> {
   String _selectedDistrict = '';
   final LatLng _center = const LatLng(43.220189, 76.876802);
   bool _showZoomHint = false;
+
+  Future setLocation(String text) async {
+
+  }
 
   Future<void> _setMarkerIcon() async {
     _getAddressFromLatLng(_center);
@@ -172,10 +177,16 @@ class _MapScreenState extends State<MapScreen> {
                     await storage.write(key: 'streetCart', value: _selectedStreet);
                     await storage.write(key: 'districtCart', value: _selectedDistrict);
                     print('Выбран адрес: $_selectedStreet, $_selectedDistrict');
+
+                    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+                    await prefs.setString('saved_location', '$_selectedStreet, $_selectedDistrict');
+
+                    print(await prefs.setString('saved_location', '$_selectedStreet, $_selectedDistrict'));
                   }
 
                   // await _getAddressFromLatLng(_markers.first.position);
-                  // await storage.write(key: 'streetCart', value: _selectedStreet);
+                  // await storage.write(key: 'streetCart', value: _selectedStreet);s
                   // await storage.write(key: 'districtCart', value: _selectedDistrict);
                   //
                   // print('Выбран адрес: $_selectedStreet, $_selectedDistrict');

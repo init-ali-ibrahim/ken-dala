@@ -9,6 +9,7 @@ import 'package:ken_dala/view/widgets/main_appbar.dart';
 import 'package:rect_getter/rect_getter.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Example extends StatefulWidget {
   const Example({super.key, required this.isar});
@@ -31,6 +32,8 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin, RouteA
 
   late Future<List<Product>> _futureProducts;
 
+  // final SharedPreferencesAsync asyncPrefs = SharedPreferencesAsync();
+
   @override
   void initState() {
     super.initState();
@@ -48,6 +51,18 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin, RouteA
     initialization();
 
     _controller.forward();
+
+    getLocation();
+
+    print('$LocalLocation  shared');
+  }
+
+  var LocalLocation;
+
+  Future getLocation() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    LocalLocation = prefs.getString('saved_location') ?? 'No location saved';
   }
 
   void initialization() async {
@@ -206,10 +221,7 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin, RouteA
 
           if (snapshot.hasData && snapshot.data!.isNotEmpty && isLoading == false) {
             final products = snapshot.data!;
-            final totalPrice = products.fold<int>(
-              0,
-              (sum, product) => sum + int.parse(product.price) * product.quantity,
-            );
+            final totalPrice = 100;
 
             return InkWell(
               onTap: () {

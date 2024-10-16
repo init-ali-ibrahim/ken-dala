@@ -3,6 +3,7 @@ import 'package:ken_dala/constants/app_colors.dart';
 import 'package:ken_dala/services/auth_service.dart';
 import 'package:ken_dala/view/widgets/custom_button.dart';
 import 'package:ken_dala/view/widgets/custom_textfield.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -28,7 +29,8 @@ class _LoginScreenState extends State<LoginScreen> {
             .showSnackBar(const SnackBar(content: Text('Login successful!')));
         final token = await _authService.getToken();
         print('Token: $token');
-        Navigator.pushNamed(context, '/profile');
+        Navigator.pushNamedAndRemoveUntil(context, '/', (Route route) => false);
+        // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Token saved!')));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Login failed: ${response['message']}')));
@@ -38,6 +40,20 @@ class _LoginScreenState extends State<LoginScreen> {
           .showSnackBar(SnackBar(content: Text('Error: $e')));
     }
   }
+
+  void _togglePasswordVisibility() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
+
+  bool _obscureText = true;
+
+  var maskFormatter = new MaskTextInputFormatter(
+      mask: '+# (###) ###-##-##',
+      filter: { "#": RegExp(r'[0-9]') },
+      type: MaskAutoCompletionType.lazy
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -102,12 +118,24 @@ class _LoginScreenState extends State<LoginScreen> {
               style: TextStyle(fontSize: 16, color: Colors.grey[600]),
             ),
             const SizedBox(height: 40),
-            CustomTextfield(
+            // CustomTextfield(
+            //   controller: _phoneController,
+            //   label: 'Номер телефона',
+            //   ktype: TextInputType.phone,
+            //   icon: const Icon(
+            //     Icons.phone,
+            //   ),
+            // ),
+
+            TextField(
               controller: _phoneController,
-              label: 'Номер телефона',
-              ktype: TextInputType.phone,
-              icon: const Icon(
-                Icons.phone,
+              keyboardType: TextInputType.number,
+              inputFormatters: [maskFormatter],
+              decoration: InputDecoration(
+                // errorText: _errorPhoneMessage,
+                hintText: '+7 (700) 000-00-00',
+                labelText: 'Введите номер телефона',
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
               ),
             ),
 

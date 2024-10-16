@@ -42,7 +42,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           SnackBar(content: Text(response['message'])),
         );
         Navigator.pushNamedAndRemoveUntil(
-            context, '/profile', (Route<dynamic> route) => false);
+            context, '/', (Route<dynamic> route) => false);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

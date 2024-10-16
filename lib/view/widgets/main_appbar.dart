@@ -38,6 +38,8 @@ class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
               const SizedBox(width: 5),
               InkWell(
                 splashFactory: NoSplash.splashFactory,
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
                 onTap: () {
                   Navigator.pushNamed(context, '/map');
                 },

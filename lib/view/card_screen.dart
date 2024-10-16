@@ -21,6 +21,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
   late Future<List<Product>> productListFuture;
 
   late FlutterSecureStorage secureStorage;
+  late Map<String, dynamic> dataUser = {};
 
   String sendUrl = 'http://192.168.0.103:80/api/v1/orders';
 
@@ -30,6 +31,32 @@ class _ProductListScreenState extends State<ProductListScreen> {
     secureStorage = const FlutterSecureStorage();
     productService = ProductService(widget.isar);
     productListFuture = productService.getAllProducts();
+
+    getUserData();
+  }
+
+
+  Future<void> getUserData() async {
+    String? authToken = await secureStorage.read(key: 'token');
+    const url = 'http://192.168.0.103:80/api/v1/auth/check';
+    final response = await http.post(Uri.parse(url), headers: {
+      'Authorization': 'Bearer $authToken',
+    });
+
+    print(authToken);
+
+    // Future.delayed(const Duration(seconds: 2));
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      print(jsonDecode(response.body));
+
+      dataUser = jsonDecode(response.body);
+
+      // print(dataUser);
+      // print(dataUser['data']['name']);
+    } else {
+      throw Exception('Failed to load user data');
+    }
   }
 
   Future<void> sendFoodCard() async {
@@ -44,7 +71,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
 
     List<Product> products = await productService.getAllProducts();
     List<Map<String, dynamic>> productData =
-        products.where((product) => product.quantity > 0).map((product) => {"product_id": product.id, "quantity": product.quantity}).toList();
+        products.where((product) => product.quantity > 0).map((product) => {"product_id": product.productId, "quantity": product.quantity}).toList();
 
     if (productData.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -59,7 +86,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
         'Authorization': 'Bearer $authToken',
         'Content-Type': 'application/json',
       },
-      body: jsonEncode({"products": productData, "name": "assylzhan", "phone": "77077701465", "delivery_type": "pickup"}),
+        body: jsonEncode({"products": productData, "name": dataUser['data']['name'], "phone": dataUser['data']['phone'], "delivery_type": "pickup"}),
     );
 
     print('Отправляем на сервер:');
@@ -71,6 +98,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Успешно отправлено')),
       );
+      clearProduct();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Ошибка при отправке')),
@@ -196,7 +224,10 @@ class _ProductListScreenState extends State<ProductListScreen> {
                           ),
                         ),
                         const SizedBox(width: 10),
-                        buildRichText(product.name, '₸ ${product.price.toString()}'),
+                        SizedBox(
+                          width: 160,
+                          child:  buildRichText(product.name, '₸ ${product.price.toString()}'),
+                        )
                       ],
                     ),
                     Container(
@@ -232,6 +263,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                     updateProductQuantity(product, product.quantity + 1);
                                   },
                           ),
+
+                          // Text(dataUser['data']['name']),
                         ],
                       ),
                     ),
@@ -431,7 +464,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 const SizedBox(height: 20),
                 TextButton(
                   onPressed: () {
-                    // checkAuthToken();
                     sendFoodCard();
                   },
                   style: TextButton.styleFrom(
