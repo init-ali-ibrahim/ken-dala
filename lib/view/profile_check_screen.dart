@@ -1,8 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:ken_dala/constants/app_colors.dart';
 import 'package:ken_dala/services/auth_service.dart';
 import 'package:ken_dala/view/profile_screen.dart';
+import 'package:ken_dala/view/widgets/custom_button.dart';
 
 class ProfileCheckScreen extends StatefulWidget {
   const ProfileCheckScreen({super.key});
@@ -41,8 +41,6 @@ class _ProfileCheckScreenState extends State<ProfileCheckScreen> {
     return _isAuthenticated ? ProfileScreen() : const EmptyScreen();
   }
 }
-
-// ---------------
 
 class EmptyScreen extends StatelessWidget {
   const EmptyScreen({super.key});
@@ -100,74 +98,66 @@ class EmptyScreen extends StatelessWidget {
           centerTitle: true,
           backgroundColor: Colors.white,
         ),
-        body: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Icon(
-                Icons.lock_outline,
-                size: 100,
-                color: Colors.red,
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                'Вы не вошли в систему',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
+        body: SingleChildScrollView(
+          child: Container(
+            height: MediaQuery.of(context).size.height - kToolbarHeight - 30,
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: MediaQuery.of(context).size.height / 20),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Opacity(
+                      opacity: 0.6,
+                      child: Image.asset(
+                        'assets/images/empty_profile.png',
+                        height: 300,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      'Вы не вошли в систему',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      'Пожалуйста, войдите в систему.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                'Пожалуйста, войдите в систему.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey[600],
+                Column(
+                  children: [
+                    CustomButton(
+                      background_color: Colors.white,
+                      text_color: AppColors.primary_color,
+                      onTap: () {
+                        Navigator.pushNamed(context, '/login');
+                      },
+                      text: 'Войти',
+                    ),
+                    const SizedBox(height: 10),
+                    CustomButton(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/register');
+                      },
+                      text: 'Зарегистрироваться',
+                    ),
+                  ],
                 ),
-              ),
-              const SizedBox(height: 30),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/login');
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30), side: const BorderSide(color: Colors.red, width: 2)),
-                ),
-                child: const Text(
-                  'Войти в систему',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.red,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/register');
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
-                child: const Text(
-                  'Зарегистрироваться',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ));
   }

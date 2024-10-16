@@ -1,7 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:ken_dala/constants/app_colors.dart';
 import 'package:ken_dala/services/auth_service.dart';
+import 'package:ken_dala/view/widgets/custom_button.dart';
+import 'package:ken_dala/view/widgets/custom_textfield.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -18,7 +21,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _passwordConfirmController = TextEditingController();
+  final TextEditingController _passwordConfirmController =
+      TextEditingController();
 
   void _register() async {
     try {
@@ -37,15 +41,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(response['message'])),
         );
-        Navigator.pushNamedAndRemoveUntil(context, '/profile', (Route<dynamic> route) => false);
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/profile', (Route<dynamic> route) => false);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Registration failed: ${response['message']}')),
+          SnackBar(
+              content: Text('Registration failed: ${response['message']}')),
         );
       }
     } on SocketException {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('No Internet connection. Please try again later.')),
+        const SnackBar(
+            content: Text('No Internet connection. Please try again later.')),
       );
       print('No Internet connection');
     } on FormatException {
@@ -68,7 +75,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Container(
+        title: SizedBox(
           width: MediaQuery.of(context).size.width,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -103,15 +110,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 60),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: 40),
-            const Icon(
-              Icons.person_add,
-              size: 100,
-              color: Colors.red,
-            ),
             const SizedBox(height: 30),
+            const Icon(Icons.person_add,
+                size: 80, color: AppColors.primary_color),
+            const SizedBox(height: 20),
             const Text(
               'Cоздать аккаунт',
               textAlign: TextAlign.center,
@@ -127,92 +132,129 @@ class _RegisterScreenState extends State<RegisterScreen> {
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 16, color: Colors.grey[600]),
             ),
-            const SizedBox(height: 40),
-            TextFormField(
-              controller: _nameController,
-              decoration: InputDecoration(
-                labelText: 'Имя',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                prefixIcon: const Icon(Icons.person),
-              ),
-            ),
-            const SizedBox(height: 20),
-            TextFormField(
-              controller: _lastNameController,
-              decoration: InputDecoration(
-                labelText: 'Фамилия',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                prefixIcon: const Icon(Icons.person_outline),
-              ),
-            ),
-            const SizedBox(height: 20),
-            TextFormField(
-              controller: _phoneController,
-              keyboardType: TextInputType.phone,
-              decoration: InputDecoration(
-                labelText: 'Номер телефона',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                prefixIcon: const Icon(Icons.phone),
-              ),
-            ),
-            const SizedBox(height: 20),
-            TextFormField(
-              controller: _emailController,
-              keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
-                labelText: 'Email',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                prefixIcon: const Icon(Icons.email),
-              ),
-            ),
-            const SizedBox(height: 20),
-            TextFormField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText: 'Пароль',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                prefixIcon: const Icon(Icons.lock),
-              ),
-            ),
-            const SizedBox(height: 20),
-            TextFormField(
-              controller: _passwordConfirmController,
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText: 'Подтвердите пароль',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                prefixIcon: const Icon(Icons.lock_outline),
-              ),
-            ),
             const SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: _register,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-                padding: const EdgeInsets.symmetric(vertical: 15),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-              ),
-              child: const Text(
-                'Войти',
-                style: TextStyle(fontSize: 18, color: Colors.white),
-              ),
+            // TextFormField(
+            //   controller: _nameController,
+            //   decoration: InputDecoration(
+            //     labelText: 'Имя',
+            //     border: OutlineInputBorder(
+            //       borderRadius: BorderRadius.circular(30),
+            //     ),
+            //     prefixIcon: const Icon(Icons.person),
+            //   ),
+            // ),
+
+            CustomTextfield(
+              controller: _nameController,
+              label: 'Имя',
+              ktype: TextInputType.text,
+              icon: const Icon(Icons.person),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 15),
+            CustomTextfield(
+              controller: _lastNameController,
+              label: 'Фамилия',
+              ktype: TextInputType.text,
+              icon: const Icon(Icons.person_outline),
+            ),
+            // TextFormField(
+            //   controller: _lastNameController,
+            //   decoration: InputDecoration(
+            //     labelText: 'Фамилия',
+            //     border: OutlineInputBorder(
+            //       borderRadius: BorderRadius.circular(30),
+            //     ),
+            //     prefixIcon: const Icon(Icons.person_outline),
+            //   ),
+            // ),
+            const SizedBox(height: 15),
+            CustomTextfield(
+              controller: _phoneController,
+              label: 'Номер телефонa',
+              ktype: TextInputType.phone,
+              icon: const Icon(Icons.phone),
+            ),
+            // TextFormField(
+            //   controller: _phoneController,
+            //   keyboardType: TextInputType.phone,
+            //   decoration: InputDecoration(
+            //     labelText: 'Номер телефона',
+            //     border: OutlineInputBorder(
+            //       borderRadius: BorderRadius.circular(30),
+            //     ),
+            //     prefixIcon: const Icon(Icons.phone),
+            //   ),
+            // ),
+            const SizedBox(height: 15),
+            CustomTextfield(
+              controller: _emailController,
+              label: 'Email',
+              ktype: TextInputType.emailAddress,
+              icon: const Icon(Icons.email),
+            ),
+            // TextFormField(
+            //   controller: _emailController,
+            //   keyboardType: TextInputType.emailAddress,
+            //   decoration: InputDecoration(
+            //     labelText: 'Email',
+            //     border: OutlineInputBorder(
+            //       borderRadius: BorderRadius.circular(30),
+            //     ),
+            //     prefixIcon: const Icon(Icons.email),
+            //   ),
+            // ),
+            const SizedBox(height: 15),
+            // TextFormField(
+            //   controller: _passwordController,
+            //   obscureText: true,
+            //   decoration: InputDecoration(
+            //     labelText: 'Пароль',
+            //     border: OutlineInputBorder(
+            //       borderRadius: BorderRadius.circular(30),
+            //     ),
+            //     prefixIcon: const Icon(Icons.lock),
+            //   ),
+            // ),
+            CustomTextfield(
+              controller: _passwordController,
+              obs: true,
+              label: 'Пароль',
+              icon: const Icon(Icons.lock),
+            ),
+            const SizedBox(height: 15),
+            // TextFormField(
+            //   controller: _passwordConfirmController,
+            //   obscureText: true,
+            //   decoration: InputDecoration(
+            //     labelText: 'Подтвердите пароль',
+            //     border: OutlineInputBorder(
+            //       borderRadius: BorderRadius.circular(30),
+            //     ),
+            //     prefixIcon: const Icon(Icons.lock_outline),
+            //   ),
+            // ),
+            CustomTextfield(
+              controller: _passwordConfirmController,
+              obs: true,
+              label: 'Подтвердите пароль',
+              icon: const Icon(Icons.lock_outline),
+            ),
+            const SizedBox(height: 25),
+            // ElevatedButton(
+            //   onPressed: _register,
+            //   style: ElevatedButton.styleFrom(
+            //     backgroundColor: Colors.red,
+            //     padding: const EdgeInsets.symmetric(vertical: 15),
+            //     shape: RoundedRectangleBorder(
+            //       borderRadius: BorderRadius.circular(30),
+            //     ),
+            //   ),
+            //   child: const Text(
+            //     'Войти',
+            //     style: TextStyle(fontSize: 18, color: Colors.white),
+            //   ),
+            // ),
+            CustomButton(onTap: _register, text: 'Войти'),
             // TextButton(
             //   onPressed: () {
             //     Navigator.pushNamed(context, '/login');

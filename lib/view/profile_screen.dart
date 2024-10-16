@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:ken_dala/services/auth_service.dart';
 import 'package:http/http.dart' as http;
 
 class Product {
@@ -54,7 +53,9 @@ class Order {
   });
 
   factory Order.fromJson(Map<String, dynamic> json) {
-    var productsList = (json['products'] as List).map((product) => Product.fromJson(product)).toList();
+    var productsList = (json['products'] as List)
+        .map((product) => Product.fromJson(product))
+        .toList();
     return Order(
       id: json['id'],
       name: json['name'],
@@ -91,8 +92,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     const url = 'http://192.168.0.103:80/api/v1/orders';
 
-
-
     final response = await http.get(
       Uri.parse(url),
       headers: {
@@ -105,7 +104,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       var data = jsonDecode(response.body);
       print('Response data: $data');
 
-      List<Order> orders = (data as List).map((order) => Order.fromJson(order)).toList();
+      List<Order> orders =
+          (data as List).map((order) => Order.fromJson(order)).toList();
       return orders;
     } else {
       throw Exception('Failed to load orders');
@@ -216,7 +216,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               const CircleAvatar(
                                 radius: 20,
                                 backgroundColor: Colors.grey,
-                                child: Icon(Icons.person, color: Colors.white, size: 30),
+                                child: Icon(Icons.person,
+                                    color: Colors.white, size: 30),
                               ),
                               const SizedBox(width: 16),
                               Column(
@@ -224,7 +225,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 children: [
                                   Text(
                                     '${userData!['data']['name'] ?? 'error'}',
-                                    style: const TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.w500),
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500),
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
@@ -236,7 +240,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ],
                               ),
                               const Spacer(),
-                              const Icon(Icons.arrow_forward_ios, size: 20),
+                              // const Icon(Icons.arrow_forward_ios, size: 20),
                             ],
                           ),
                         ),
@@ -266,8 +270,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Column(children: [
                         const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                          child: Text('Заказы', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 10),
+                          child: Text('Заказы',
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold)),
                         ),
                         Column(
                           children: orders.map((order) {
@@ -282,29 +289,44 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
                                         child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Text('Order ${order.id} - ${order.name}', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                        Text(
+                                            'Order ${order.id} - ${order.name}',
+                                            style: const TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold)),
                                         const SizedBox(height: 4),
                                         Text('${order.orderedAt}'),
                                         const SizedBox(height: 10),
                                         Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          children: order.products.asMap().entries.map((entry) {
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: order.products
+                                              .asMap()
+                                              .entries
+                                              .map((entry) {
                                             int index = entry.key;
                                             var product = entry.value;
 
                                             if (index < 2) {
                                               return Padding(
-                                                padding: const EdgeInsets.symmetric(vertical: 4.0),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 4.0),
                                                 child: ClipRRect(
-                                                  borderRadius: BorderRadius.circular(99),
+                                                  borderRadius:
+                                                      BorderRadius.circular(99),
                                                   child: Image.network(
                                                     product.imageUrl,
                                                     height: 60,
@@ -315,14 +337,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               );
                                             } else if (index == 2) {
                                               return Padding(
-                                                padding: const EdgeInsets.symmetric(vertical: 4.0),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 4.0),
                                                 child: ClipRRect(
-                                                  borderRadius: BorderRadius.circular(99),
+                                                  borderRadius:
+                                                      BorderRadius.circular(99),
                                                   child: Container(
                                                     height: 60,
                                                     width: 60,
                                                     color: Colors.grey[200],
-                                                    child: const Icon(Icons.more_horiz, size: 30),
+                                                    child: const Icon(
+                                                        Icons.more_horiz,
+                                                        size: 30),
                                                   ),
                                                 ),
                                               );
@@ -334,16 +361,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     )),
                                     Container(
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
                                         children: [
                                           Text(
                                             order.status,
-                                            style: const TextStyle(color: Colors.green),
+                                            style: const TextStyle(
+                                                color: Colors.green),
                                           ),
                                           const Text(
                                             '20 T',
-                                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
                                           ),
                                         ],
                                       ),
@@ -372,54 +404,50 @@ class CartEmpty extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
         child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const SizedBox(height: 30),
-        Stack(
-          children: [
-            ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Container(
-                  width: MediaQuery.of(context).size.width - 40,
-                  height: MediaQuery.of(context).size.width - 40,
-                  child: Image.asset(
-                    'assets/images/cartEmpty.png',
-                    fit: BoxFit.cover,
-                  ),
-                )),
-            Container(
-              width: MediaQuery.of(context).size.width - 40,
-              height: MediaQuery.of(context).size.width - 40,
-              decoration: BoxDecoration(
-                color: Colors.red.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(60),
-              ),
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width - 40,
-              height: MediaQuery.of(context).size.width - 40,
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(60),
-              ),
-            )
-          ],
+        // const SizedBox(height: 30),
+        const Text(
+          'Мои заказы',
+          style: TextStyle(fontSize: 20),
         ),
-        const SizedBox(height: 10),
-        SizedBox(
+        const SizedBox(height: 20),
+        Container(
           width: MediaQuery.of(context).size.width - 40,
-          child: const Text(
-            textAlign: TextAlign.center,
-            'У вас пока корзина пуста, можите добавить товары',
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-            ),
+          height: 300,
+          decoration: BoxDecoration(
+            color: Colors.grey.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(30),
+          ),
+          //   ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 200,
+                height: 200,
+                child: Opacity(
+                  opacity: 0.6,
+                  child: Image.asset(
+                    'assets/images/empty_b.png',
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                textAlign: TextAlign.center,
+                'Ваша корзина пуста, вы можете добавить новые товары',
+                style: TextStyle(
+                  fontSize: 15,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
           ),
         ),
-        const SizedBox(height: 40),
       ],
     ));
   }
