@@ -13,17 +13,14 @@ import 'package:ken_dala/view/profile_check_screen.dart';
 import 'package:ken_dala/view/profile_edit_screen.dart';
 import 'package:ken_dala/view/register_screen.dart';
 import 'package:path_provider/path_provider.dart';
+// import 'package:path_provider/path_provider';
 
-import 'package:ken_dala/view/profile_screen.dart';
-// import 'package:ken_dala/example.dart';
-
-final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
+RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-
 
   final dir = await getApplicationDocumentsDirectory();
 
@@ -56,8 +53,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         pageTransitionsTheme: const PageTransitionsTheme(
           builders: {
-            TargetPlatform.android: SharedAxisPageTransitionsBuilder(transitionType: SharedAxisTransitionType.horizontal),
-            TargetPlatform.iOS: SharedAxisPageTransitionsBuilder(transitionType: SharedAxisTransitionType.horizontal),
+            TargetPlatform.android: SharedAxisPageTransitionsBuilder(
+                transitionType: SharedAxisTransitionType.horizontal),
+            TargetPlatform.iOS: SharedAxisPageTransitionsBuilder(
+                transitionType: SharedAxisTransitionType.horizontal),
           },
         ),
         scaffoldBackgroundColor: Colors.white,
@@ -66,7 +65,6 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-
       navigatorObservers: [routeObserver],
       routes: {
         '/': (context) => Example(isar: isar),

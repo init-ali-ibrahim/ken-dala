@@ -1,6 +1,8 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:http/http.dart' as http;
 import 'package:isar/isar.dart';
 import 'package:ken_dala/constants/app_colors.dart';
 import 'package:ken_dala/main.dart';
@@ -8,8 +10,6 @@ import 'package:ken_dala/model/product.dart';
 import 'package:ken_dala/view/widgets/main_appbar.dart';
 import 'package:rect_getter/rect_getter.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
-import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Example extends StatefulWidget {
   const Example({super.key, required this.isar});
@@ -20,7 +20,8 @@ class Example extends StatefulWidget {
   State<Example> createState() => _ExampleState();
 }
 
-class _ExampleState extends State<Example> with TickerProviderStateMixin, RouteAware {
+class _ExampleState extends State<Example>
+    with TickerProviderStateMixin, RouteAware {
   late AutoScrollController scrollController;
   late TabController tabController;
   late PageData data;
@@ -31,8 +32,6 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin, RouteA
   bool isLoading = true;
 
   late Future<List<Product>> _futureProducts;
-
-  // final SharedPreferencesAsync asyncPrefs = SharedPreferencesAsync();
 
   @override
   void initState() {
@@ -51,18 +50,6 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin, RouteA
     initialization();
 
     _controller.forward();
-
-    getLocation();
-
-    print('$LocalLocation  shared');
-  }
-
-  var LocalLocation;
-
-  Future getLocation() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    LocalLocation = prefs.getString('saved_location') ?? 'No location saved';
   }
 
   void initialization() async {
@@ -72,11 +59,11 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin, RouteA
     FlutterNativeSplash.remove();
   }
 
-
   Future<void> _loadData() async {
     try {
       data = await ExampleData.fetchDataFromAPI();
-      tabController = TabController(length: data.categories.length, vsync: this);
+      tabController =
+          TabController(length: data.categories.length, vsync: this);
       setState(() {
         isLoading = false;
       });
@@ -134,13 +121,16 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin, RouteA
   bool onScrollNotification(ScrollNotification notification) {
     int lastTabIndex = tabController.length - 1;
     List<int> visibleItems = getVisibleItemsIndex();
-    bool reachLastTabIndex = visibleItems.isNotEmpty && visibleItems.length <= 2 && visibleItems.last == lastTabIndex;
+    bool reachLastTabIndex = visibleItems.isNotEmpty &&
+        visibleItems.length <= 2 &&
+        visibleItems.last == lastTabIndex;
     if (reachLastTabIndex) {
       tabController.animateTo(lastTabIndex);
     } else if (visibleItems.isNotEmpty) {
       int sumIndex = visibleItems.reduce((value, element) => value + element);
       int middleIndex = sumIndex ~/ visibleItems.length;
-      if (tabController.index != middleIndex) tabController.animateTo(middleIndex);
+      if (tabController.index != middleIndex)
+        tabController.animateTo(middleIndex);
     }
     return false;
   }
@@ -164,9 +154,13 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin, RouteA
       backgroundColor: const Color(0xFFF4F4F6),
       appBar: const MainAppbar(),
       body: ClipRRect(
-        borderRadius: const BorderRadius.only(topRight: Radius.circular(30), topLeft: Radius.circular(30)),
+        borderRadius: const BorderRadius.only(
+            topRight: Radius.circular(30), topLeft: Radius.circular(30)),
         child: Container(
-          decoration: const BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)), color: Colors.white),
+          decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+              color: Colors.white),
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           child: isLoading
@@ -189,13 +183,16 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin, RouteA
                               physics: const NeverScrollableScrollPhysics(),
                               controller: tabController,
                               isScrollable: true,
-                              labelPadding: const EdgeInsets.symmetric(horizontal: 20),
+                              labelPadding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
                               tabAlignment: TabAlignment.start,
                               labelColor: Colors.black,
                               unselectedLabelColor: Colors.grey,
                               indicatorColor: Colors.transparent,
                               dividerColor: Colors.transparent,
-                              tabs: data.categories.map((category) => Tab(text: category.title)).toList(),
+                              tabs: data.categories
+                                  .map((category) => Tab(text: category.title))
+                                  .toList(),
                               onTap: animateAndScrollTo,
                             ),
                           ),
@@ -219,9 +216,17 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin, RouteA
             return const Center(child: CircularProgressIndicator());
           }
 
-          if (snapshot.hasData && snapshot.data!.isNotEmpty && isLoading == false) {
+          if (snapshot.hasData &&
+              snapshot.data!.isNotEmpty &&
+              isLoading == false) {
             final products = snapshot.data!;
             final totalPrice = 100;
+
+            // final totalPrice = products.fold<int>(
+            //   0,
+            //   (sum, product) =>
+            //       sum + int.parse(product.price) * product.quantity,
+            // );
 
             return InkWell(
               onTap: () {
@@ -243,7 +248,10 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin, RouteA
                         child: Center(
                           child: Text(
                             '₸ $totalPrice',
-                            style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500),
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500),
                           ),
                         ),
                       ),
@@ -257,7 +265,10 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin, RouteA
                               Positioned(
                                 right: 0,
                                 child: Container(
-                                  decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.white, width: 2)),
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                          color: Colors.white, width: 2)),
                                   child: ClipOval(
                                     child: Image.network(
                                       products[0].images,
@@ -273,7 +284,10 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin, RouteA
                               Positioned(
                                   right: 25,
                                   child: Container(
-                                    decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.white, width: 2)),
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                            color: Colors.white, width: 2)),
                                     child: ClipOval(
                                       child: Image.network(
                                         products[1].images,
@@ -288,7 +302,10 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin, RouteA
                               Positioned(
                                   right: 50,
                                   child: Container(
-                                    decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.white, width: 2)),
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                            color: Colors.white, width: 2)),
                                     child: ClipOval(
                                       child: Image.network(
                                         products[2].images,
@@ -345,7 +362,8 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   double get maxExtent => _tabBar.preferredSize.height + 10;
 
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: double.infinity,
@@ -391,7 +409,9 @@ class CategorySection extends StatelessWidget {
 
   Widget _buildFoodTileList(BuildContext context) {
     return Column(
-      children: category.foods.map((food) => _buildFoodTile(food: food, context: context)).toList(),
+      children: category.foods
+          .map((food) => _buildFoodTile(food: food, context: context))
+          .toList(),
     );
   }
 
@@ -417,14 +437,16 @@ class CategorySection extends StatelessWidget {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(99),
-                    child: Image.network(food.imageUrl, width: 120, height: 120, fit: BoxFit.cover),
+                    child: Image.network(food.imageUrl,
+                        width: 120, height: 120, fit: BoxFit.cover),
                   ),
                   food.isNew == false
                       ? Positioned(
                           right: 5,
                           top: 5,
                           child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 1),
                             decoration: BoxDecoration(
                               color: Colors.red,
                               borderRadius: BorderRadius.circular(12),
@@ -444,7 +466,8 @@ class CategorySection extends StatelessWidget {
                           right: 5,
                           top: 5,
                           child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 1),
                             decoration: BoxDecoration(
                               color: Colors.orange,
                               borderRadius: BorderRadius.circular(12),
@@ -487,7 +510,10 @@ class CategorySection extends StatelessWidget {
                       Navigator.pushNamed(context, '/detail', arguments: food);
                     },
                     style: TextButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 1), minimumSize: const Size(50, 30), backgroundColor: Colors.grey.shade200),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 1),
+                        minimumSize: const Size(50, 30),
+                        backgroundColor: Colors.grey.shade200),
                     child: Text(
                       '₸ ${food.price}',
                       style: const TextStyle(fontSize: 12, color: Colors.black),
