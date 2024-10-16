@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:ken_dala/constants/app_colors.dart';
 import 'package:ken_dala/services/auth_service.dart';
+import 'package:ken_dala/view/widgets/custom_button.dart';
+import 'package:ken_dala/view/widgets/custom_textfield.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -21,15 +24,18 @@ class _LoginScreenState extends State<LoginScreen> {
         _passwordController.text,
       );
       if (response['success']) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Login successful!')));
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text('Login successful!')));
         final token = await _authService.getToken();
         print('Token: $token');
         Navigator.pushNamed(context, '/profile');
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Login failed: ${response['message']}')));
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Login failed: ${response['message']}')));
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Error: $e')));
     }
   }
 
@@ -78,11 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: 40),
-            const Icon(
-              Icons.lock,
-              size: 100,
-              color: Colors.red,
-            ),
+            const Icon(Icons.lock, size: 100, color: AppColors.primary_color),
             const SizedBox(height: 30),
             const Text(
               'С возвращением!',
@@ -100,51 +102,46 @@ class _LoginScreenState extends State<LoginScreen> {
               style: TextStyle(fontSize: 16, color: Colors.grey[600]),
             ),
             const SizedBox(height: 40),
-            TextFormField(
+            CustomTextfield(
               controller: _phoneController,
-              keyboardType: TextInputType.phone,
-              decoration: InputDecoration(
-                labelText: 'Номер телефона',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                prefixIcon: const Icon(Icons.phone),
+              label: 'Номер телефона',
+              ktype: TextInputType.phone,
+              icon: const Icon(
+                Icons.phone,
               ),
             ),
+
             const SizedBox(height: 20),
-            TextFormField(
+            CustomTextfield(
               controller: _passwordController,
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText: 'Пароль',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                prefixIcon: const Icon(Icons.lock),
-              ),
+              ktype: TextInputType.visiblePassword,
+              label: 'Пароль',
+              icon: const Icon(Icons.lock),
+              obs: true,
             ),
             const SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: _login,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-                padding: const EdgeInsets.symmetric(vertical: 15),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-              ),
-              child: const Text(
-                'Войти',
-                style: TextStyle(fontSize: 18, color: Colors.white),
-              ),
-            ),
+            // ElevatedButton(
+            //   onPressed: _login,
+            //   style: ElevatedButton.styleFrom(
+            //     backgroundColor: Colors.red,
+            //     padding: const EdgeInsets.symmetric(vertical: 15),
+            //     shape: RoundedRectangleBorder(
+            //       borderRadius: BorderRadius.circular(30),
+            //     ),
+            //   ),
+            //   child: const Text(
+            //     'Войти',
+            //     style: TextStyle(fontSize: 18, color: Colors.white),
+            //   ),
+            // ),
+            CustomButton(onTap: _login, text: 'Войти'),
             const SizedBox(height: 20),
             // TextButton(
             //   onPressed: () {
             //     Navigator.pushNamed(context, '/register');
             //   },
             //   child: const Text(
-            //       'У вас нет учетной записи? подписывать',
+            //     'У вас нет учетной записи? подписывать',
             //     style: TextStyle(fontSize: 16, color: Colors.red),
             //   ),
             // ),
