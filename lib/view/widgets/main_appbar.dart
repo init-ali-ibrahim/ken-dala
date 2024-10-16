@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ken_dala/constants/app_colors.dart';
 
 class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
   const MainAppbar({super.key});
@@ -17,41 +18,54 @@ class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              IconButton(
-                  style: IconButton.styleFrom(backgroundColor: Colors.white, padding: const EdgeInsets.all(0)),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/map');
-                  },
-                  icon: const Icon(
-                    Icons.man,
-                    size: 24,
-                    color: Colors.red,
-                  )),
+              // IconButton(
+              //     style: IconButton.styleFrom(backgroundColor: Colors.white, padding: const EdgeInsets.all(0)),
+              //     onPressed: () {
+              //       Navigator.pushNamed(context, '/map');
+              //     },
+              //     icon: const Icon(
+              //       Icons.man,
+              //       size: 24,
+              //       color: AppColors.primary_color,
+              //     )),
+
+              InkWell(
+                child: Image.asset(
+                  'assets/images/logo.png',
+                  width: 70,
+                ),
+              ),
               const SizedBox(width: 5),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Алматы, 11-й микрорайон, 36',
-                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-                      ),
-                      Icon(
-                        Icons.keyboard_arrow_down_sharp,
-                        size: 20,
-                      )
-                    ],
-                  ),
-                  RichText(
-                      text: const TextSpan(
-                    style: TextStyle(fontSize: 12, color: Colors.grey),
-                    children: [TextSpan(text: 'Бесплатная доставка, '), TextSpan(text: 'через 33 минуты', style: TextStyle(color: Colors.green))],
-                  )),
-                ],
+              InkWell(
+                splashFactory: NoSplash.splashFactory,
+                onTap: () {
+                  Navigator.pushNamed(context, '/map');
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Алматы, 11-й микрорайон, 36',
+                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                        ),
+                        Icon(
+                          Icons.keyboard_arrow_down_sharp,
+                          size: 20,
+                        )
+                      ],
+                    ),
+                    RichText(
+                        text: const TextSpan(
+                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                      children: [TextSpan(text: 'Бесплатная доставка, '), TextSpan(text: 'через 33 минуты', style: TextStyle(color: Colors.green))],
+                    )),
+                  ],
+                ),
               )
             ],
           ),
@@ -62,7 +76,7 @@ class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
               },
               icon: const Icon(
                 Icons.emoji_emotions,
-                color: Colors.red,
+                color: AppColors.primary_color,
               )),
         ],
       ),

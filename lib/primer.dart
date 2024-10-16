@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:isar/isar.dart';
+import 'package:ken_dala/constants/app_colors.dart';
 import 'package:ken_dala/main.dart';
 import 'package:ken_dala/model/product.dart';
 import 'package:ken_dala/view/widgets/main_appbar.dart';
@@ -218,7 +219,7 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin, RouteA
                   padding: const EdgeInsets.symmetric(horizontal: 7),
                   height: 60,
                   decoration: BoxDecoration(
-                    color: Colors.red,
+                    color: AppColors.primary_color,
                     borderRadius: BorderRadius.circular(100),
                   ),
                   child: Row(

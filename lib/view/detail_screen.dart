@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
+import 'package:ken_dala/constants/app_colors.dart';
 import 'package:ken_dala/model/product.dart';
 import 'package:ken_dala/primer.dart' as dateScreen;
 
@@ -195,7 +196,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     print("Stack trace: $stackTrace");
                   }
                 },
-                splashColor: Colors.red,
+                splashColor: AppColors.primary_color,
                 borderRadius: BorderRadius.circular(99),
                 child: Container(
                     width: MediaQuery.of(context).size.width,
@@ -204,7 +205,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(99),
                       // shape: BoxShape.circle,
-                      color: Colors.red,
+                      color: AppColors.primary_color,
                     ),
                     child: Center(
                       child: Text(

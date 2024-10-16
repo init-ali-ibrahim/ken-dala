@@ -39,6 +39,9 @@ class _MapScreenState extends State<MapScreen> {
           _selectedDistrict = '${place.subLocality}';
         });
       }
+
+      print(_selectedStreet);
+      print(_selectedDistrict);
     } catch (e) {
       print(e);
     }

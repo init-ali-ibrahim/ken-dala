@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:isar/isar.dart';
+import 'package:ken_dala/constants/app_colors.dart';
 import 'package:ken_dala/model/product.dart';
 import 'package:http/http.dart' as http;
 
@@ -341,7 +342,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                         Spacer(),
                                         Icon(
                                           Icons.check,
-                                          color: Colors.redAccent,
+                                          color: AppColors.primary_color,
                                         ),
                                       ],
                                     ),
@@ -369,7 +370,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                         Spacer(),
                                         Icon(
                                           Icons.check,
-                                          color: Colors.redAccent,
+                                          color: AppColors.primary_color,
                                         ),
                                       ],
                                     ),
@@ -435,7 +436,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                   },
                   style: TextButton.styleFrom(
                     minimumSize: const Size.fromHeight(55),
-                    backgroundColor: const Color(0xFFDA3131),
+                    backgroundColor: AppColors.primary_color,
                   ),
                   child: const Text(
                     'Оплатить',
@@ -497,7 +498,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
               },
               child: const Text(
                 'Очистить',
-                style: TextStyle(color: Colors.red),
+                style: TextStyle(color: AppColors.primary_color),
               ),
             ),
           ],
