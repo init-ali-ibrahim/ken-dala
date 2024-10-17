@@ -23,7 +23,7 @@ class _DetailScreenState extends State<DetailScreen> {
     productService = ProductService(widget.isar);
   }
 
-  Future<void> controlProductId(int productId, String name, String price, String imgUrl) async {
+  Future<void> controlProductId(int productId, String name, int price, String imgUrl) async {
     try {
       final comingProduct = await productService.isar.products.filter().productIdEqualTo(productId).findFirst();
 
@@ -38,7 +38,7 @@ class _DetailScreenState extends State<DetailScreen> {
     }
   }
 
-  Future<void> addProductNew(int productId, String name, String price, String imgUrl) async {
+  Future<void> addProductNew(int productId, String name, int price, String imgUrl) async {
     try {
       final newProduct = Product(
         productId: productId,

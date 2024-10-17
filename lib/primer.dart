@@ -129,8 +129,9 @@ class _ExampleState extends State<Example>
     } else if (visibleItems.isNotEmpty) {
       int sumIndex = visibleItems.reduce((value, element) => value + element);
       int middleIndex = sumIndex ~/ visibleItems.length;
-      if (tabController.index != middleIndex)
+      if (tabController.index != middleIndex){
         tabController.animateTo(middleIndex);
+      }
     }
     return false;
   }
@@ -220,13 +221,11 @@ class _ExampleState extends State<Example>
               snapshot.data!.isNotEmpty &&
               isLoading == false) {
             final products = snapshot.data!;
-            final totalPrice = 100;
+            // final totalPrice =
 
-            // final totalPrice = products.fold<int>(
-            //   0,
-            //   (sum, product) =>
-            //       sum + int.parse(product.price) * product.quantity,
-            // );
+            final totalPrice = products.fold<int>(
+              0, (sum, product) => sum + product.price * product.quantity
+            );
 
             return InkWell(
               onTap: () {
@@ -440,7 +439,7 @@ class CategorySection extends StatelessWidget {
                     child: Image.network(food.imageUrl,
                         width: 120, height: 120, fit: BoxFit.cover),
                   ),
-                  food.isNew == false
+                  food.isNew == true
                       ? Positioned(
                           right: 5,
                           top: 5,
@@ -593,7 +592,7 @@ class Food {
   String name;
   String slug;
   String description;
-  String price;
+  int price;
   String imageUrl;
   int quantity;
   bool isNew;

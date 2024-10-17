@@ -75,21 +75,31 @@ flutter:
     - assets/
     - assets/fonts/
     - assets/images/
+    - assets/fonts/inter/
+    - assets/fonts/pregoo/
 
   fonts:
     - family: Inter
       fonts:
-        - asset: assets/fonts/Inter_18pt-Thin.ttf
+        - asset: assets/fonts/inter/Inter_18pt-Thin.ttf
           weight: 100
-        - asset: assets/fonts/Inter_18pt-Light.ttf
+        - asset: assets/fonts/inter/Inter_18pt-Light.ttf
           weight: 300
-        - asset: assets/fonts/Inter_18pt-Regular.ttf
+        - asset: assets/fonts/inter/Inter_18pt-Regular.ttf
           weight: 400
-        - asset: assets/fonts/Inter_18pt-Medium.ttf
+        - asset: assets/fonts/inter/Inter_18pt-Medium.ttf
           weight: 500
-        - asset: assets/fonts/Inter_18pt-SemiBold.ttf
+        - asset: assets/fonts/inter/Inter_18pt-SemiBold.ttf
           weight: 600
-        - asset: assets/fonts/Inter_18pt-Bold.ttf
+        - asset: assets/fonts/inter/Inter_18pt-Bold.ttf
           weight: 700
-        - asset: assets/fonts/Inter_18pt-ExtraBold.ttf
+        - asset: assets/fonts/inter/Inter_18pt-ExtraBold.ttf
           weight: 800
+    - family: Prego
+      fonts:
+        - asset: assets/fonts/pregoo/PregoLight.ttf
+          weight: 300
+        - asset: assets/fonts/pregoo/PregoRegular.ttf
+          weight: 400
+        - asset: assets/fonts/pregoo/PregoBold.ttf
+          weight: 700

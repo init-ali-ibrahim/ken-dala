@@ -9,7 +9,7 @@ class Product {
   final int productId;
   final String name;
   final String slug;
-  final String price;
+  final int price;
   final String images;
   int quantity;
 
@@ -96,7 +96,7 @@ class ProductService {
     final allProducts = await getAllProducts();
 
     for (var product in allProducts) {
-      totalPrice += int.parse(product.price) * product.quantity;
+      totalPrice += product.price * product.quantity;
     }
 
     return totalPrice;

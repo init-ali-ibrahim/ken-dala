@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:ken_dala/services/auth_service.dart';
 
 import '../constants/app_colors.dart';
 
@@ -78,7 +79,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  // final AuthService _authService = AuthService();
+  final AuthService _authService = AuthService();
   late FlutterSecureStorage secureStorage;
   late Future<dynamic> ordersFuture;
 
@@ -169,6 +170,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 style: TextStyle(color: Colors.black),
               ),
               InkWell(
+                onTap: (){
+                  _authService.logout();
+                  Navigator.pop(context);
+                },
                 borderRadius: const BorderRadius.all(Radius.circular(99)),
                 child: Container(
                   width: 40,
@@ -176,7 +181,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   padding: const EdgeInsets.all(8),
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.transparent,
+                    color: Colors.red,
                   ),
                 ),
               ),

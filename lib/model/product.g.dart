@@ -30,7 +30,7 @@ const ProductSchema = CollectionSchema(
     r'price': PropertySchema(
       id: 2,
       name: r'price',
-      type: IsarType.string,
+      type: IsarType.long,
     ),
     r'productId': PropertySchema(
       id: 3,
@@ -70,7 +70,6 @@ int _productEstimateSize(
   var bytesCount = offsets.last;
   bytesCount += 3 + object.images.length * 3;
   bytesCount += 3 + object.name.length * 3;
-  bytesCount += 3 + object.price.length * 3;
   bytesCount += 3 + object.slug.length * 3;
   return bytesCount;
 }
@@ -83,7 +82,7 @@ void _productSerialize(
 ) {
   writer.writeString(offsets[0], object.images);
   writer.writeString(offsets[1], object.name);
-  writer.writeString(offsets[2], object.price);
+  writer.writeLong(offsets[2], object.price);
   writer.writeLong(offsets[3], object.productId);
   writer.writeLong(offsets[4], object.quantity);
   writer.writeString(offsets[5], object.slug);
@@ -98,7 +97,7 @@ Product _productDeserialize(
   final object = Product(
     images: reader.readString(offsets[0]),
     name: reader.readString(offsets[1]),
-    price: reader.readString(offsets[2]),
+    price: reader.readLong(offsets[2]),
     productId: reader.readLong(offsets[3]),
     quantity: reader.readLong(offsets[4]),
     slug: reader.readString(offsets[5]),
@@ -119,7 +118,7 @@ P _productDeserializeProp<P>(
     case 1:
       return (reader.readString(offset)) as P;
     case 2:
-      return (reader.readString(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 3:
       return (reader.readLong(offset)) as P;
     case 4:
@@ -533,54 +532,46 @@ extension ProductQueryFilter
   }
 
   QueryBuilder<Product, Product, QAfterFilterCondition> priceEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+      int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'price',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<Product, Product, QAfterFilterCondition> priceGreaterThan(
-    String value, {
+    int value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'price',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<Product, Product, QAfterFilterCondition> priceLessThan(
-    String value, {
+    int value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'price',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<Product, Product, QAfterFilterCondition> priceBetween(
-    String lower,
-    String upper, {
+    int lower,
+    int upper, {
     bool includeLower = true,
     bool includeUpper = true,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -589,75 +580,6 @@ extension ProductQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Product, Product, QAfterFilterCondition> priceStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'price',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Product, Product, QAfterFilterCondition> priceEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'price',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Product, Product, QAfterFilterCondition> priceContains(
-      String value,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'price',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Product, Product, QAfterFilterCondition> priceMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'price',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Product, Product, QAfterFilterCondition> priceIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'price',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<Product, Product, QAfterFilterCondition> priceIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'price',
-        value: '',
       ));
     });
   }
@@ -1082,10 +1004,9 @@ extension ProductQueryWhereDistinct
     });
   }
 
-  QueryBuilder<Product, Product, QDistinct> distinctByPrice(
-      {bool caseSensitive = true}) {
+  QueryBuilder<Product, Product, QDistinct> distinctByPrice() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'price', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'price');
     });
   }
 
@@ -1129,7 +1050,7 @@ extension ProductQueryProperty
     });
   }
 
-  QueryBuilder<Product, String, QQueryOperations> priceProperty() {
+  QueryBuilder<Product, int, QQueryOperations> priceProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'price');
     });

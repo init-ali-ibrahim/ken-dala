@@ -14,63 +14,80 @@ class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              // IconButton(
-              //     style: IconButton.styleFrom(backgroundColor: Colors.white, padding: const EdgeInsets.all(0)),
-              //     onPressed: () {
-              //       Navigator.pushNamed(context, '/map');
-              //     },
-              //     icon: const Icon(
-              //       Icons.man,
-              //       size: 24,
-              //       color: AppColors.primary_color,
-              //     )),
-
-              InkWell(
-                child: Image.asset(
-                  'assets/images/logo.png',
-                  width: 70,
-                ),
-              ),
-              const SizedBox(width: 5),
-              InkWell(
-                splashFactory: NoSplash.splashFactory,
-                splashColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-                onTap: () {
-                  Navigator.pushNamed(context, '/map');
-                },
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Алматы, 11-й микрорайон, 36',
-                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-                        ),
-                        Icon(
-                          Icons.keyboard_arrow_down_sharp,
-                          size: 20,
-                        )
-                      ],
-                    ),
-                    RichText(
-                        text: const TextSpan(
-                      style: TextStyle(fontSize: 12, color: Colors.grey),
-                      children: [TextSpan(text: 'Бесплатная доставка, '), TextSpan(text: 'через 33 минуты', style: TextStyle(color: Colors.green))],
-                    )),
-                  ],
-                ),
-              )
-            ],
+           InkWell(
+            child: Image.asset(
+              'assets/images/logo.png',
+              width: 70,
+            ),
           ),
+          //
+          // Text(
+          //   'Пример текста с шрифтом Prego',
+          //   style: TextStyle(
+          //     fontFamily: 'Prego',
+          //     fontWeight: FontWeight.w700, // Жирный (weight: 700)
+          //     fontSize: 20.0,
+          //   ),
+          // ),
+
+
+          // Row(
+          //   crossAxisAlignment: CrossAxisAlignment.center,
+          //   mainAxisAlignment: MainAxisAlignment.start,
+          //   children: [
+          //     // IconButton(
+          //     //     style: IconButton.styleFrom(backgroundColor: Colors.white, padding: const EdgeInsets.all(0)),
+          //     //     onPressed: () {
+          //     //       Navigator.pushNamed(context, '/map');
+          //     //     },
+          //     //     icon: const Icon(
+          //     //       Icons.man,
+          //     //       size: 24,
+          //     //       color: AppColors.primary_color,
+          //     //     )),
+          //
+          //     InkWell(
+          //       child: Image.asset(
+          //         'assets/images/logo.png',
+          //         width: 70,
+          //       ),
+          //     ),
+          //     const SizedBox(width: 5),
+          //     InkWell(
+          //       splashFactory: NoSplash.splashFactory,
+          //       splashColor: Colors.transparent,
+          //       highlightColor: Colors.transparent,
+          //       onTap: () {
+          //         Navigator.pushNamed(context, '/map');
+          //       },
+          //       child: Column(
+          //         mainAxisAlignment: MainAxisAlignment.center,
+          //         crossAxisAlignment: CrossAxisAlignment.start,
+          //         children: [
+          //           const Row(
+          //             crossAxisAlignment: CrossAxisAlignment.center,
+          //             mainAxisAlignment: MainAxisAlignment.start,
+          //             children: [
+          //               Text(
+          //                 'Алматы, 11-й микрорайон, 36',
+          //                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+          //               ),
+          //               Icon(
+          //                 Icons.keyboard_arrow_down_sharp,
+          //                 size: 20,
+          //               )
+          //             ],
+          //           ),
+          //           RichText(
+          //               text: const TextSpan(
+          //             style: TextStyle(fontSize: 12, color: Colors.grey),
+          //             children: [TextSpan(text: 'Бесплатная доставка, '), TextSpan(text: 'через 33 минуты', style: TextStyle(color: Colors.green))],
+          //           )),
+          //         ],
+          //       ),
+          //     )
+          //   ],
+          // ),
           IconButton(
               style: IconButton.styleFrom(backgroundColor: Colors.white),
               onPressed: () {
