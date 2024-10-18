@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:ken_dala/services/auth_service.dart';
+import 'package:ken_dala/view/widgets/custom_row2.dart';
+import 'package:ken_dala/view/widgets/custom_row_data.dart';
 
 import '../constants/app_colors.dart';
 
@@ -170,7 +172,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 style: TextStyle(color: Colors.black),
               ),
               InkWell(
-                onTap: (){
+                onTap: () {
                   _authService.logout();
                   Navigator.pop(context);
                 },
@@ -179,10 +181,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   width: 40,
                   height: 40,
                   padding: const EdgeInsets.all(8),
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.red,
+                    color: AppColors.primary_color.withOpacity(0.2),
                   ),
+                  child: const Icon(Icons.logout),
                 ),
               ),
             ],
@@ -217,38 +220,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           borderRadius: BorderRadius.circular(16),
                         ),
                         padding: const EdgeInsets.all(16),
-                        child: Row(
+                        child: Column(
                           children: [
-                            CircleAvatar(
-                              radius: 30,
-                              backgroundColor:
-                                  AppColors.primary_color.withOpacity(0.2),
-                              child: const Icon(Icons.person,
-                                  color: AppColors.primary_color, size: 30),
-                            ),
-                            const SizedBox(width: 16),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            Row(
                               children: [
-                                Text(
-                                  '${userData!['data']['name'] ?? 'error'}',
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.primary_color,
-                                  ),
+                                CircleAvatar(
+                                  radius: 25,
+                                  backgroundColor:
+                                      AppColors.primary_color.withOpacity(0.2),
+                                  child: const Icon(Icons.person,
+                                      color: AppColors.primary_color, size: 30),
                                 ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  '${userData['data']['phone'] ?? 'error'}',
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                  ),
+                                const SizedBox(width: 10),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '${userData!['data']['name'] ?? 'error'}',
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColors.primary_color,
+                                      ),
+                                    ),
+                                    Text(
+                                      '${userData['data']['phone'] ?? 'error'}',
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
                                 ),
+                                const Spacer(),
+                                // const Icon(Icons.arrow_forward_ios, size: 20),
                               ],
                             ),
-                            const Spacer(),
-                            // const Icon(Icons.arrow_forward_ios, size: 20),
                           ],
                         ),
                       ),
@@ -259,7 +265,65 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 }
               },
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF4F4F6),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const SizedBox(width: 5),
+                    InkWell(
+                      splashFactory: NoSplash.splashFactory,
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      onTap: () {
+                        Navigator.pushNamed(context, '/map');
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Алматы, 11-й микрорайон, 36',
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.w500),
+                              ),
+                              Icon(
+                                Icons.keyboard_arrow_down_sharp,
+                                size: 20,
+                              )
+                            ],
+                          ),
+                          RichText(
+                              text: const TextSpan(
+                            style: TextStyle(fontSize: 12, color: Colors.grey),
+                            children: [
+                              TextSpan(text: 'Бесплатная доставка, '),
+                              TextSpan(
+                                text: 'через 33 минуты',
+                                style: TextStyle(color: Colors.green),
+                              ),
+                            ],
+                          )),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
             FutureBuilder<List<Order>>(
               future: getOrders(),
               builder: (context, snapshot) {
@@ -275,18 +339,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   }
 
                   return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 10),
-                          child: Text(
-                            'Мои заказы',
-                            style: TextStyle(fontSize: 20),
-                          ),
+                        const Text(
+                          'Мои заказы',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w600),
                         ),
+                        const SizedBox(height: 5),
                         Column(
                           children: orders.map((order) {
                             return InkWell(
@@ -336,15 +398,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    const Text(
-                                                      'Детали заказа',
-                                                      style: TextStyle(
-                                                        fontSize: 13,
-                                                        color: AppColors
-                                                            .dark_grey_color,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
+                                                    const Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Text(
+                                                          'Детали заказа',
+                                                          style: TextStyle(
+                                                            fontSize: 13,
+                                                            color: AppColors
+                                                                .dark_grey_color,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          'Оплачен',
+                                                          style: TextStyle(
+                                                            fontSize: 17,
+                                                            color: Colors.green,
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
                                                     const SizedBox(height: 10),
                                                     const Row(
@@ -431,82 +509,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       ),
                                                     ),
                                                     const SizedBox(height: 20),
-                                                    const Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          'Номер заказа',
-                                                          style: TextStyle(
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          '1729075024',
-                                                          style: TextStyle(
-                                                            fontSize: 16,
-                                                            color: AppColors
-                                                                .dark_grey_color,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                          ),
-                                                        ),
-                                                      ],
+                                                    const CustomRowData(
+                                                      name: "Номер заказа",
+                                                      value: '1729075024',
                                                     ),
                                                     const SizedBox(height: 20),
-                                                    const Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          'Имя клиента',
-                                                          style: TextStyle(
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          'assylzhan',
-                                                          style: TextStyle(
-                                                            fontSize: 16,
-                                                            color: AppColors
-                                                                .dark_grey_color,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                          ),
-                                                        ),
-                                                      ],
+                                                    const CustomRowData(
+                                                      name: 'Имя клиента',
+                                                      value: 'assylzhan',
                                                     ),
                                                     const SizedBox(height: 20),
-                                                    const Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          'Номер телефона',
-                                                          style: TextStyle(
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          '+7 707 770 14 65',
-                                                          style: TextStyle(
-                                                            fontSize: 16,
-                                                            color: AppColors
-                                                                .dark_grey_color,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                          ),
-                                                        ),
-                                                      ],
+                                                    const CustomRowData(
+                                                      name: 'Номер телефона',
+                                                      value: '+7 707 770 14 65',
                                                     ),
                                                     const SizedBox(height: 10),
                                                     const Text(
@@ -521,7 +536,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     ),
                                                     const SizedBox(height: 10),
                                                     Container(
-                                                      height: 120,
+                                                      height: 110,
                                                       width: double.maxFinite,
                                                       decoration: BoxDecoration(
                                                         borderRadius:
@@ -530,30 +545,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                         color: const Color(
                                                             0xFFF4F4F6),
                                                       ),
-                                                      child: Center(
-                                                        child: Row(
-                                                          children: [
-                                                            Container(
-                                                              width: 120,
-                                                              height: 120,
-                                                              child: Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .all(
-                                                                        8.0),
-                                                                child:
-                                                                    Image.asset(
-                                                                  'assets/pizza.png',
-                                                                  height: 100,
-                                                                  width: 100,
-                                                                ),
+                                                      child: Row(
+                                                        children: [
+                                                          SizedBox(
+                                                            width: 120,
+                                                            height: 120,
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child:
+                                                                  Image.asset(
+                                                                'assets/pizza.png',
+                                                                height: 90,
+                                                                width: 90,
                                                               ),
                                                             ),
-                                                            const Padding(
+                                                          ),
+                                                          const Expanded(
+                                                            child: Padding(
                                                               padding:
                                                                   EdgeInsets
                                                                       .all(
-                                                                15.0,
+                                                                13.0,
                                                               ),
                                                               child: Column(
                                                                 crossAxisAlignment:
@@ -568,29 +582,50 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                                     style:
                                                                         TextStyle(
                                                                       fontSize:
-                                                                          18,
+                                                                          16,
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .w500,
                                                                     ),
                                                                   ),
-                                                                  Text(
-                                                                    '20 Т',
-                                                                    style:
-                                                                        TextStyle(
-                                                                      fontSize:
-                                                                          18,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
-                                                                    ),
-                                                                  ),
+                                                                  CustomRow2(
+                                                                      name:
+                                                                          'Кол-во',
+                                                                      size1: 14,
+                                                                      value:
+                                                                          'х1'),
+                                                                  CustomRow2(
+                                                                      name:
+                                                                          'Стоимость',
+                                                                      size1: 14,
+                                                                      value:
+                                                                          '20 Т'),
                                                                 ],
                                                               ),
                                                             ),
-                                                          ],
-                                                        ),
+                                                          ),
+                                                        ],
                                                       ),
+                                                    ),
+                                                    const SizedBox(height: 10),
+                                                    const Text(
+                                                      'Итого',
+                                                      style: TextStyle(
+                                                        fontSize: 13,
+                                                        color: AppColors
+                                                            .dark_grey_color,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(height: 5),
+                                                    const CustomRow2(
+                                                      name: 'Общая стоимость',
+                                                      weight: FontWeight.bold,
+                                                      color1: Colors.black,
+                                                      value: '20 T',
+                                                      size1: 20,
+                                                      size2: 20,
                                                     ),
                                                   ],
                                                 ),
@@ -610,7 +645,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 width: MediaQuery.of(context).size.width,
                                 decoration: BoxDecoration(
                                   color: const Color(0xFFF4F4F6),
-                                  borderRadius: BorderRadius.circular(30),
+                                  borderRadius: BorderRadius.circular(16),
                                 ),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,

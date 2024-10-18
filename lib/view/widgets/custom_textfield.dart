@@ -5,6 +5,7 @@ class CustomTextfield extends StatelessWidget {
   final String label;
   final Icon icon;
   final bool obs;
+  final double rad;
   final TextInputType? ktype;
   CustomTextfield({
     super.key,
@@ -13,6 +14,7 @@ class CustomTextfield extends StatelessWidget {
     required this.icon,
     this.obs = false,
     this.ktype,
+    this.rad = 30,
   });
 
   @override
@@ -27,7 +29,7 @@ class CustomTextfield extends StatelessWidget {
         decoration: InputDecoration(
           labelText: label,
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: BorderRadius.circular(rad),
           ),
           prefixIcon: icon,
         ),
