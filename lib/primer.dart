@@ -20,8 +20,7 @@ class Example extends StatefulWidget {
   State<Example> createState() => _ExampleState();
 }
 
-class _ExampleState extends State<Example>
-    with TickerProviderStateMixin, RouteAware {
+class _ExampleState extends State<Example> with TickerProviderStateMixin, RouteAware {
   late AutoScrollController scrollController;
   late TabController tabController;
   late PageData data;
@@ -59,11 +58,25 @@ class _ExampleState extends State<Example>
     FlutterNativeSplash.remove();
   }
 
+  // Future<void> _loadData() async {
+  //   try {
+  //     data = await ExampleData.fetchDataFromAPI();
+  //     tabController = TabController(length: data.categories.length, vsync: this);
+  //     setState(() {
+  //       isLoading = false;
+  //     });
+  //   } catch (e) {
+  //     print('Error loading data: $e');
+  //     setState(() {
+  //       isLoading = true;
+  //     });
+  //   }
+  // }
+
   Future<void> _loadData() async {
     try {
       data = await ExampleData.fetchDataFromAPI();
-      tabController =
-          TabController(length: data.categories.length, vsync: this);
+      tabController = TabController(length: data.categories.length, vsync: this);
       setState(() {
         isLoading = false;
       });
@@ -121,15 +134,13 @@ class _ExampleState extends State<Example>
   bool onScrollNotification(ScrollNotification notification) {
     int lastTabIndex = tabController.length - 1;
     List<int> visibleItems = getVisibleItemsIndex();
-    bool reachLastTabIndex = visibleItems.isNotEmpty &&
-        visibleItems.length <= 2 &&
-        visibleItems.last == lastTabIndex;
+    bool reachLastTabIndex = visibleItems.isNotEmpty && visibleItems.length <= 2 && visibleItems.last == lastTabIndex;
     if (reachLastTabIndex) {
       tabController.animateTo(lastTabIndex);
     } else if (visibleItems.isNotEmpty) {
       int sumIndex = visibleItems.reduce((value, element) => value + element);
       int middleIndex = sumIndex ~/ visibleItems.length;
-      if (tabController.index != middleIndex){
+      if (tabController.index != middleIndex) {
         tabController.animateTo(middleIndex);
       }
     }
@@ -155,13 +166,9 @@ class _ExampleState extends State<Example>
       backgroundColor: const Color(0xFFF4F4F6),
       appBar: const MainAppbar(),
       body: ClipRRect(
-        borderRadius: const BorderRadius.only(
-            topRight: Radius.circular(30), topLeft: Radius.circular(30)),
+        borderRadius: const BorderRadius.only(topRight: Radius.circular(30), topLeft: Radius.circular(30)),
         child: Container(
-          decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30), topRight: Radius.circular(30)),
-              color: Colors.white),
+          decoration: const BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)), color: Colors.white),
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           child: isLoading
@@ -184,16 +191,13 @@ class _ExampleState extends State<Example>
                               physics: const NeverScrollableScrollPhysics(),
                               controller: tabController,
                               isScrollable: true,
-                              labelPadding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
+                              labelPadding: const EdgeInsets.symmetric(horizontal: 20),
                               tabAlignment: TabAlignment.start,
-                              labelColor: Colors.black,
+                              labelColor: AppColors.primary_color,
                               unselectedLabelColor: Colors.grey,
                               indicatorColor: Colors.transparent,
                               dividerColor: Colors.transparent,
-                              tabs: data.categories
-                                  .map((category) => Tab(text: category.title))
-                                  .toList(),
+                              tabs: data.categories.map((category) => Tab(text: category.title)).toList(),
                               onTap: animateAndScrollTo,
                             ),
                           ),
@@ -217,15 +221,11 @@ class _ExampleState extends State<Example>
             return const Center(child: CircularProgressIndicator());
           }
 
-          if (snapshot.hasData &&
-              snapshot.data!.isNotEmpty &&
-              isLoading == false) {
+          if (snapshot.hasData && snapshot.data!.isNotEmpty && isLoading == false) {
             final products = snapshot.data!;
             // final totalPrice =
 
-            final totalPrice = products.fold<int>(
-              0, (sum, product) => sum + product.price * product.quantity
-            );
+            final totalPrice = products.fold<int>(0, (sum, product) => sum + product.price * product.quantity);
 
             return InkWell(
               onTap: () {
@@ -247,10 +247,7 @@ class _ExampleState extends State<Example>
                         child: Center(
                           child: Text(
                             '₸ $totalPrice',
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500),
+                            style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500),
                           ),
                         ),
                       ),
@@ -264,10 +261,7 @@ class _ExampleState extends State<Example>
                               Positioned(
                                 right: 0,
                                 child: Container(
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                          color: Colors.white, width: 2)),
+                                  decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.white, width: 2)),
                                   child: ClipOval(
                                     child: Image.network(
                                       products[0].images,
@@ -283,10 +277,7 @@ class _ExampleState extends State<Example>
                               Positioned(
                                   right: 25,
                                   child: Container(
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        border: Border.all(
-                                            color: Colors.white, width: 2)),
+                                    decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.white, width: 2)),
                                     child: ClipOval(
                                       child: Image.network(
                                         products[1].images,
@@ -301,10 +292,7 @@ class _ExampleState extends State<Example>
                               Positioned(
                                   right: 50,
                                   child: Container(
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        border: Border.all(
-                                            color: Colors.white, width: 2)),
+                                    decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.white, width: 2)),
                                     child: ClipOval(
                                       child: Image.network(
                                         products[2].images,
@@ -361,8 +349,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   double get maxExtent => _tabBar.preferredSize.height + 10;
 
   @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: double.infinity,
@@ -393,10 +380,10 @@ class CategorySection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.only(left: 10),
             child: Text(
               category.title,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
             ),
           ),
           const SizedBox(height: 10),
@@ -408,9 +395,7 @@ class CategorySection extends StatelessWidget {
 
   Widget _buildFoodTileList(BuildContext context) {
     return Column(
-      children: category.foods
-          .map((food) => _buildFoodTile(food: food, context: context))
-          .toList(),
+      children: category.foods.map((food) => _buildFoodTile(food: food, context: context)).toList(),
     );
   }
 
@@ -436,16 +421,14 @@ class CategorySection extends StatelessWidget {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(99),
-                    child: Image.network(food.imageUrl,
-                        width: 120, height: 120, fit: BoxFit.cover),
+                    child: Image.network(food.imageUrl, width: 120, height: 120, fit: BoxFit.cover),
                   ),
                   food.isNew == true
                       ? Positioned(
                           right: 5,
                           top: 5,
                           child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 1),
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
                             decoration: BoxDecoration(
                               color: Colors.red,
                               borderRadius: BorderRadius.circular(12),
@@ -465,8 +448,7 @@ class CategorySection extends StatelessWidget {
                           right: 5,
                           top: 5,
                           child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 1),
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
                             decoration: BoxDecoration(
                               color: Colors.orange,
                               borderRadius: BorderRadius.circular(12),
@@ -509,13 +491,10 @@ class CategorySection extends StatelessWidget {
                       Navigator.pushNamed(context, '/detail', arguments: food);
                     },
                     style: TextButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 1),
-                        minimumSize: const Size(50, 30),
-                        backgroundColor: Colors.grey.shade200),
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 1), minimumSize: const Size(50, 30), backgroundColor: AppColors.primary_color.withOpacity(0.1)),
                     child: Text(
                       '₸ ${food.price}',
-                      style: const TextStyle(fontSize: 12, color: Colors.black),
+                      style: TextStyle(fontSize: 12, color: AppColors.primary_color.withOpacity(0.7)),
                     ),
                   ),
                 ],
@@ -528,46 +507,151 @@ class CategorySection extends StatelessWidget {
   }
 }
 
+// class ExampleData {
+//   ExampleData._internal();
+//
+//   static Future<PageData> fetchDataFromAPI() async {
+//     final url = Uri.parse('http://192.168.0.103:80/api/v1/catalog/products');
+//     final response = await http.get(url, headers: {
+//       'Accept': 'application/json',
+//     });
+//
+//     if (response.statusCode == 200 || response.statusCode == 201) {
+//       final dataResponse = json.decode(response.body);
+//       return dataFromAPI(dataResponse['data']);
+//     } else {
+//       throw Exception('Failed to load data from API');
+//     }
+//   }
+//
+//   static PageData dataFromAPI(List<dynamic> productsData) {
+//     List<Food> foods = productsData.map((productData) {
+//       return Food(
+//         id: productData['id'],
+//         name: productData['name'],
+//         description: productData['description'],
+//         slug: productData['slug'],
+//         price: productData['price'],
+//         imageUrl: productData['image'],
+//         quantity: productData['quantity'],
+//         isNew: productData['is_new'] == true || productData['is_new'] == 'true',
+//         isHit: productData['is_hit'] == true || productData['is_hit'] == 'true',
+//       );
+//     }).toList();
+//
+//     Category category = Category(
+//       title: "Категория",
+//       foods: foods,
+//     );
+//
+//     return PageData(categories: [category, category]);
+//   }
+// }
+
 class ExampleData {
   ExampleData._internal();
 
-  static Future<PageData> fetchDataFromAPI() async {
-    final url = Uri.parse('http://192.168.0.103:80/api/v1/catalog/products');
+  static Future<List<Category>> fetchCategoriesFromAPI() async {
+    final url = Uri.parse('http://192.168.0.103:80/api/v1/categories');
     final response = await http.get(url, headers: {
       'Accept': 'application/json',
     });
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      final dataResponse = json.decode(response.body);
-      return dataFromAPI(dataResponse['data']);
+      final categoriesResponse = json.decode(response.body)['data'];
+      return categoriesResponse.map<Category>((categoryData) {
+        return Category(
+          id: categoryData['id'],
+          title: categoryData['name'],
+          slug: categoryData['slug'],
+          foods: [],
+        );
+      }).toList();
     } else {
-      throw Exception('Failed to load data from API');
+      throw Exception('API func fetchCategoriesFromAPI');
     }
   }
 
-  static PageData dataFromAPI(List<dynamic> productsData) {
-    List<Food> foods = productsData.map((productData) {
-      return Food(
-        id: productData['id'],
-        name: productData['name'],
-        description: productData['description'],
-        slug: productData['slug'],
-        price: productData['price'],
-        imageUrl: productData['image'],
-        quantity: productData['quantity'],
-        isNew: productData['is_new'] == true || productData['is_new'] == 'true',
-        isHit: productData['is_hit'] == true || productData['is_hit'] == 'true',
-      );
-    }).toList();
+  static Future<List<Food>> fetchProductsByCategorySlug(String slug) async {
+    final url = Uri.parse('http://192.168.0.103:80/api/v1/catalog/products?category=$slug');
+    final response = await http.get(url, headers: {
+      'Accept': 'application/json',
+    });
 
-    Category category = Category(
-      title: "Категория",
-      foods: foods,
-    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final productsResponse = json.decode(response.body)['data'];
+      return productsResponse.map<Food>((productData) {
+        return Food(
+          id: productData['id'],
+          name: productData['name'],
+          description: productData['description'],
+          slug: productData['slug'],
+          price: productData['price'],
+          imageUrl: productData['image'],
+          quantity: productData['quantity'],
+          isNew: productData['is_new'] == true || productData['is_new'] == 'true',
+          isHit: productData['is_hit'] == true || productData['is_hit'] == 'true',
+        );
+      }).toList();
+    } else {
+      throw Exception('API func fetchProductsByCategorySlug');
+    }
+  }
 
-    return PageData(categories: [category, category]);
+  static Future<PageData> fetchDataFromAPI() async {
+    List<Category> categories = await fetchCategoriesFromAPI();
+
+    for (var category in categories) {
+      List<Food> foods = await fetchProductsByCategorySlug(category.slug);
+      category.foods = foods;
+    }
+
+    return PageData(categories: categories);
   }
 }
+
+// class PageData {
+//   List<Category> categories;
+//
+//   PageData({
+//     required this.categories,
+//   });
+// }
+//
+// class Category {
+//   String title;
+//   List<Food> foods;
+//
+//   Category({
+//     required this.title,
+//     required this.foods,
+//   });
+// }
+//
+// class Food {
+//   int id;
+//   String name;
+//   String slug;
+//   String description;
+//   int price;
+//   String imageUrl;
+//   int quantity;
+//   bool isNew;
+//   bool isHit;
+//
+//   Food({
+//     required this.id,
+//     required this.name,
+//     required this.slug,
+//     required this.description,
+//     required this.price,
+//     required this.imageUrl,
+//     required this.quantity,
+//     required this.isNew,
+//     required this.isHit,
+//   });
+// }
+
 
 class PageData {
   List<Category> categories;
@@ -578,11 +662,15 @@ class PageData {
 }
 
 class Category {
+  int id;
   String title;
+  String slug;
   List<Food> foods;
 
   Category({
+    required this.id,
     required this.title,
+    required this.slug,
     required this.foods,
   });
 }

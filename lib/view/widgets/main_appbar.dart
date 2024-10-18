@@ -14,21 +14,23 @@ class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-           InkWell(
-            child: Image.asset(
-              'assets/images/logo.png',
-              width: 70,
-            ),
-          ),
-          //
-          // Text(
-          //   'Пример текста с шрифтом Prego',
-          //   style: TextStyle(
-          //     fontFamily: 'Prego',
-          //     fontWeight: FontWeight.w700, // Жирный (weight: 700)
-          //     fontSize: 20.0,
+          //  InkWell(
+          //   child: Image.asset(
+          //     'assets/images/logo.png',
+          //     width: 70,
           //   ),
           // ),
+          // //
+
+          const Text(
+            'AZURE',
+            style: TextStyle(
+              color: AppColors.primary_color,
+              fontFamily: 'Prego',
+              fontWeight: FontWeight.w700,
+              fontSize: 30,
+            ),
+          ),
 
 
           // Row(
@@ -94,7 +96,7 @@ class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
                 Navigator.pushNamed(context, '/profile');
               },
               icon: const Icon(
-                Icons.emoji_emotions,
+                Icons.person,
                 color: AppColors.primary_color,
               )),
         ],

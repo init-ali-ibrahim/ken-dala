@@ -33,7 +33,6 @@ dependencies:
   flutter_native_splash: ^2.4.1
   mask_text_input_formatter: ^2.9.0
 
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -42,19 +41,32 @@ dev_dependencies:
   build_runner: ^2.4.11
   flutter_launcher_icons: ^0.14.1
 
+#flutter_launcher_icons:
+#  image_path_android: "assets/images/icon_a.jpg"
+#  image_path_ios: "assets/images/icon_a.jpg"
+#  background_color_android: "#ffffff"
+#  android: true
+#  ios: true
+#  adaptive_icon_background: "assets/images/icon_a.jpg"
+#  adaptive_icon_foreground: "assets/images/icon_a.jpg"
+#  adaptive_icon_foreground_inset: 16
+#  adaptive_icon_monochrome: "assets/images/icon_a.jpg"
+#  min_sdk_android: 21
+#  remove_alpha_ios: true
+#  background_color_ios: "#ffffff"
+
 flutter_launcher_icons:
-  image_path_android: "assets/images/logo_white.jpg"
-  image_path_ios: "assets/images/logo_white.jpg"
-  background_color_android: "#ffffff"
+  image_path_android: "assets/images/icon"
+  image_path_ios: "assets/images/icon"
   android: true
   ios: true
-  adaptive_icon_background: "assets/images/logo_white.jpg"
-  adaptive_icon_foreground: "assets/images/logo_white.jpg"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/images/icon"
   adaptive_icon_foreground_inset: 16
-  adaptive_icon_monochrome: "assets/images/logo_white.jpg"
   min_sdk_android: 21
   remove_alpha_ios: true
-  background_color_ios: "#ffffff"
+  background_color_android: "#FFFFFFFF"
+  background_color_ios: "#FFFFFFFF"
 
 flutter_native_splash:
   color: "#FFFFFF"
@@ -67,7 +79,6 @@ flutter_native_splash:
   ios: true
   web: false
 
-
 flutter:
   uses-material-design: true
 
@@ -77,6 +88,8 @@ flutter:
     - assets/images/
     - assets/fonts/inter/
     - assets/fonts/pregoo/
+    - assets/images/icon.png
+
 
   fonts:
     - family: Inter
