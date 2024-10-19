@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:ken_dala/constants/app_colors.dart';
 import 'package:ken_dala/services/auth_service.dart';
@@ -42,8 +45,48 @@ class _ProfileCheckScreenState extends State<ProfileCheckScreen> {
   }
 }
 
-class EmptyScreen extends StatelessWidget {
+class EmptyScreen extends StatefulWidget {
   const EmptyScreen({super.key});
+
+  @override
+  State<EmptyScreen> createState() => _EmptyScreenState();
+}
+
+class _EmptyScreenState extends State<EmptyScreen> {
+  String _connectionStatus = 'Unknown';
+  final Connectivity _connectivity = Connectivity();
+
+  @override
+  void initState() {
+    super.initState();
+    _checkConnection();
+  }
+
+  // Проверка подключения к интернету
+  Future<void> _checkConnection() async {
+    final result = await _connectivity.checkConnectivity();
+
+    // Проверяем доступность интернет-соединения через пинг
+    bool isConnected = await _hasInternetConnection();
+
+    setState(() {
+      if (result == ConnectivityResult.wifi || result == ConnectivityResult.mobile) {
+        _connectionStatus = isConnected ? 'Connected to the Internet' : 'No Internet Connection';
+      } else {
+        _connectionStatus = 'No Internet Connection';
+      }
+    });
+  }
+
+  // Функция для пинга интернет-соединения
+  Future<bool> _hasInternetConnection() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
+    } catch (e) {
+      return false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,6 +150,29 @@ class EmptyScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+
+
+                SizedBox(height: 100),
+
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      'Connection Status:',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    SizedBox(height: 20),
+                    Text(
+                      _connectionStatus,
+                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: _checkConnection,
+                      child: Text('Check Connection'),
+                    ),
+                  ],
+                ),
                 SizedBox(height: MediaQuery.of(context).size.height / 20),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,

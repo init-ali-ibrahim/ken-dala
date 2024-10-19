@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "445974476072",
+    "project_id": "azure-3b732",
+    "storage_bucket": "azure-3b732.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:445974476072:android:4ad7fd7ebaf0acb07ecc1d",
+        "android_client_info": {
+          "package_name": "com.example.ken_dala"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLCZdZDsamIcZrkazxyIg5ny_flHW6fgA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

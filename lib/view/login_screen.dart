@@ -18,10 +18,39 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  void _validatePhoneInput() {
+    setState(() {
+      if (_phoneController.text.isEmpty) {
+        _errorPhoneMessage = 'Это поле обязательно для заполнения';
+      } else {
+        _errorPhoneMessage = null;
+      }
+    });
+  }
+
+  void _validatePasswordInput() {
+    setState(() {
+      if (_passwordController.text.isEmpty) {
+        _errorPasswordMessage = 'Это поле обязательно для заполнения';
+      } else {
+        _errorPasswordMessage = null;
+      }
+    });
+  }
+
+  String? _errorPhoneMessage;
+  String? _errorPasswordMessage;
+  String? _errorMessage;
+
+
   void _login() async {
     try {
+      print(_phoneController.text);
+      print(_passwordController.text);
+      print(maskFormatter.getUnmaskedText());
+
       final response = await _authService.login(
-        _phoneController.text,
+        maskFormatter.getUnmaskedText(),
         _passwordController.text,
       );
       if (response['success']) {
@@ -127,11 +156,15 @@ class _LoginScreenState extends State<LoginScreen> {
             //   ),
             // ),
 
+            // TextFormField
+
             TextField(
               controller: _phoneController,
               keyboardType: TextInputType.number,
               inputFormatters: [maskFormatter],
               decoration: InputDecoration(
+                errorText: _errorPhoneMessage,
+
                 // errorText: _errorPhoneMessage,
                 hintText: '+7 (700) 000-00-00',
                 labelText: 'Введите номер телефона',
@@ -140,13 +173,33 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
 
             const SizedBox(height: 20),
-            CustomTextfield(
+
+            TextField(
               controller: _passwordController,
-              ktype: TextInputType.visiblePassword,
-              label: 'Пароль',
-              icon: const Icon(Icons.lock),
-              obs: true,
+              obscureText: _obscureText,
+              decoration: InputDecoration(
+                labelText: 'Пароль',
+                errorText: _errorPasswordMessage,
+
+                // errorText: _errorPasswordMessage,
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _obscureText ? Icons.visibility_off : Icons.visibility,
+                  ),
+                  onPressed: _togglePasswordVisibility,
+                ),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+              ),
             ),
+
+            const SizedBox(height: 20),
+            // CustomTextfield(
+            //   controller: _passwordController,
+            //   ktype: TextInputType.visiblePassword,
+            //   label: 'Пароль',
+            //   icon: const Icon(Icons.lock),
+            //   obs: true,
+            // ),
             const SizedBox(height: 30),
             // ElevatedButton(
             //   onPressed: _login,
@@ -162,6 +215,14 @@ class _LoginScreenState extends State<LoginScreen> {
             //     style: TextStyle(fontSize: 18, color: Colors.white),
             //   ),
             // ),
+
+            ElevatedButton(
+              child: Text('data'),
+              onPressed: () {
+                _validatePasswordInput();
+                _validatePhoneInput();
+              }
+            ),
             CustomButton(onTap: _login, text: 'Войти'),
             const SizedBox(height: 20),
             // TextButton(
