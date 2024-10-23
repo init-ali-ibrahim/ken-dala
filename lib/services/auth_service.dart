@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
@@ -7,9 +8,12 @@ class AuthService {
   final String registerUrl = 'http://192.168.0.103:80/api/v1/auth/register';
   final String loginUrl = 'http://192.168.0.103:80/api/v1/auth/login';
 
+  final messaging = FirebaseMessaging.instance;
+
+
   final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
 
-  Future<Map<String, dynamic>> register(String name, String lastName, String phone, String email, String password, String passwordConfirmation) async {
+  Future<Map<String, dynamic>> register(String name, String lastName, String phone, String email, String password, String passwordConfirmation, String notificationToken) async {
     final requestBody = {
       'name': name,
       'last_name': lastName,
@@ -17,6 +21,7 @@ class AuthService {
       'email': email,
       'password': password,
       'password_confirmation': passwordConfirmation,
+      'device_token': notificationToken
     };
 
     print('Отправляемые данные: $requestBody');

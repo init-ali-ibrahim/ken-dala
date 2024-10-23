@@ -1,5 +1,7 @@
+import 'dart:developer';
 import 'dart:io';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:ken_dala/constants/app_colors.dart';
 import 'package:ken_dala/services/auth_service.dart';
@@ -21,19 +23,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _passwordConfirmController =
-      TextEditingController();
+  final TextEditingController _passwordConfirmController = TextEditingController();
+
+  late String _fcmToken;
+
+  @override
+  void initState() {
+    super.initState();
+
+    final messaging = FirebaseMessaging.instance;
+
+    messaging.getToken().then((token) {
+      log('FCM Token: $token');
+      _fcmToken = token!;
+      // FirebaseMessaging.instance.subscribeToTopic("admin");
+      // print('Subscribed to topic');
+      print('$_fcmToken');
+    });
+  }
 
   void _register() async {
     try {
-      final response = await _authService.register(
-        _nameController.text,
-        _lastNameController.text,
-        _phoneController.text,
-        _emailController.text,
-        _passwordController.text,
-        _passwordConfirmController.text,
-      );
+      final response = await _authService.register(_nameController.text, _lastNameController.text, _phoneController.text, _emailController.text, _passwordController.text,
+          _passwordConfirmController.text, _fcmToken);
 
       print(response);
 
@@ -41,18 +53,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(response['message'])),
         );
-        Navigator.pushNamedAndRemoveUntil(
-            context, '/', (Route<dynamic> route) => false);
+        Navigator.pushNamedAndRemoveUntil(context, '/', (Route<dynamic> route) => false);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: Text('Registration failed: ${response['message']}')),
+          SnackBar(content: Text('Registration failed: ${response['message']}')),
         );
       }
     } on SocketException {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('No Internet connection. Please try again later.')),
+        const SnackBar(content: Text('No Internet connection. Please try again later.')),
       );
       print('No Internet connection');
     } on FormatException {
@@ -114,8 +123,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: 30),
-            const Icon(Icons.person_add,
-                size: 80, color: AppColors.primary_color),
+            const Icon(Icons.person_add, size: 80, color: AppColors.primary_color),
             const SizedBox(height: 20),
             const Text(
               'Cоздать аккаунт',

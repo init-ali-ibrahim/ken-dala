@@ -154,25 +154,25 @@ class _EmptyScreenState extends State<EmptyScreen> {
 
                 SizedBox(height: 100),
 
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      'Connection Status:',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    SizedBox(height: 20),
-                    Text(
-                      _connectionStatus,
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: _checkConnection,
-                      child: Text('Check Connection'),
-                    ),
-                  ],
-                ),
+                // Column(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: <Widget>[
+                //     Text(
+                //       'Connection Status:',
+                //       style: TextStyle(fontSize: 20),
+                //     ),
+                //     SizedBox(height: 20),
+                //     Text(
+                //       _connectionStatus,
+                //       style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                //     ),
+                //     SizedBox(height: 20),
+                //     ElevatedButton(
+                //       onPressed: _checkConnection,
+                //       child: Text('Check Connection'),
+                //     ),
+                //   ],
+                // ),
                 SizedBox(height: MediaQuery.of(context).size.height / 20),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,

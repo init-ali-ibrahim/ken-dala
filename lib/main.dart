@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:isar/isar.dart';
+import 'package:ken_dala/example.dart';
 import 'package:ken_dala/firebase_options.dart';
 import 'package:ken_dala/model/product.dart';
 import 'package:ken_dala/primer.dart';
@@ -52,6 +53,9 @@ void main() async {
 
   messaging.getToken().then((token) {
     log('FCM Token: $token');
+
+    FirebaseMessaging.instance.subscribeToTopic("admin");
+    print('Subscribed to topic');
   });
 
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
@@ -121,6 +125,7 @@ class MyApp extends StatelessWidget {
       navigatorObservers: [routeObserver],
       routes: {
         '/': (context) => Example(isar: isar),
+        // '/': (context) => NotificationSender(),
         // '/': (context) => MapScreen(),
         '/map': (context) => const MapScreen(),
         '/cart': (context) => ProductListScreen(isar: isar),

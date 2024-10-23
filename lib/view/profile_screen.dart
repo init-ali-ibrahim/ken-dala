@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:developer';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -208,6 +210,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 } else if (snapshot.hasData) {
                   var userData = snapshot.data;
 
+                  final messaging = FirebaseMessaging.instance;
+
+                  messaging.getToken().then((token) {
+                    log('FCM Token: $token');
+
+                    if(userData!['data']['is_admin'] == 1){
+                      FirebaseMessaging.instance.subscribeToTopic("admin");
+                      print('Subscribed to admin topic');
+                    }
+                  });
+
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: InkWell(
@@ -239,6 +252,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       '${userData!['data']['name'] ?? 'error'}',
                                       style: const TextStyle(
                                         fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColors.primary_color,
+                                      ),
+                                    ),
+                                    Text(
+                                      '${userData['data']['is_admin'] ?? 'error'}',
+                                      style: const TextStyle(
+                                        fontSize: 10,
                                         fontWeight: FontWeight.bold,
                                         color: AppColors.primary_color,
                                       ),
